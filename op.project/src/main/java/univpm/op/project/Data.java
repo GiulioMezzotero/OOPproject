@@ -263,7 +263,7 @@ public static List<Entity> getData() {
 			data_j.put("Media", n[i].getAverage() );
 			data_j.put("Minimo", n[i].getMin() );
 			data_j.put("Massimo", n[i].getMax() );
-			data_j.put("DeviazioneStandard", n[i].getDevstd() );
+			data_j.put("DeviazioneStandard", n[i].getStdDev() );
 			
 			dataObject.put("Dati", data_j);
 			dataObject.put("TipoDato", "Numerico");
