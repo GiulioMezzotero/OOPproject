@@ -23,7 +23,7 @@ public static JSONObject getJSONData() {
 		JSONObject dataJSONObj = new JSONObject();
 		JSONArray dataJSONArr = new JSONArray();
 
-		for (Entity e : Data.getData())
+		for (Entity e : Data.getData())  //for each: riempio gli oggetti e inserisco nell'array
 		{
 			JSONObject entityObject = new JSONObject();
 
@@ -34,7 +34,7 @@ public static JSONObject getJSONData() {
 			entityObject.put("country", e.getCountry() );
 
 
-			JSONObject dataObj = new JSONObject();
+			JSONObject dataObj = new JSONObject();  //indici: lista degli NData
 			for (NData nd : e.getIndexes())
 			{
 				dataObj.put(nd.getYear(), nd.getValue());				
@@ -65,6 +65,9 @@ public static List<Entity> getData() {
 
 	public static void DataParsing( String file )
 	{
+		
+		System.out.println("PARSING DEL FILE \""+file+"\".");
+		
 		try {
 			FileReader readingData = new FileReader( file );
 			BufferedReader bufferedReader = new BufferedReader( readingData );
@@ -72,7 +75,7 @@ public static List<Entity> getData() {
 			String[] entityData;
 			String[] headingData;
 
-			headingData = bufferedReader.readLine().split("[,\\t]");
+			headingData = bufferedReader.readLine().split("[,\\t]");  //divide una stringa in un array per ogni virgola o tab incontrato
 
             for(String lineData; (lineData = bufferedReader.readLine()) != null; )
             {
@@ -85,7 +88,7 @@ public static List<Entity> getData() {
             	e.setNace( entityData[1].trim() );
                 e.setAdj( entityData[2].trim() );
                 e.setUnit( entityData[3].trim() );
-                e.setCountry( entityData[4] );
+                e.setCountry( entityData[4].trim() );
 
                 int i;
             	for( i = 5; i < headingData.length && i < entityData.length ; i++ )

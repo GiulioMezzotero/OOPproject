@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import univpm.op.project.StringName;
 
 
 public abstract class Utils {
 	
-	public static void downloadFile(String link, String result)
+	public static void downloadFile()
 	{
 		try
 		{
@@ -19,10 +20,10 @@ public abstract class Utils {
 		    
 		    System.out.println("Effettuiamo il download del file");
 			
-			InputStream datasetStream = new URL( link ).openStream();
+			InputStream datasetStream = new URL( StringName.URL ).openStream();
 			BufferedInputStream inputStream = new BufferedInputStream( datasetStream  );
 			
-			FileOutputStream fileOutputStream = new FileOutputStream( result );
+			FileOutputStream fileOutputStream = new FileOutputStream( StringName.NOMEFILE );
 			
 		    while ((Rbytes = inputStream.read(buffer, 0, 2048)) != -1) {
 		        fileOutputStream.write(buffer, 0, Rbytes);

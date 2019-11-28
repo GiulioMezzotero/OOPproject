@@ -8,15 +8,13 @@ import univpm.op.project.utils.Utils;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) {
-		
-		Utils.downloadFile("http://data.europa.eu/euodp/data/api/3/action/package_show?id=GeGKzwDc03b3j0olhD5DQ","Dataset.json");
-
-		
-		
-		//Utils.downloadFile("","Dataset.tsv");
-		
-		SpringApplication.run(Application.class, args);
+	public static void main(String[] args)  {
+	
+			Utils.downloadFile();
+			
+			Data.DataParsing( StringName.NOMEFILE );
+			
+		    SpringApplication.run(Application.class, args);
 	}
 
 }
