@@ -268,7 +268,39 @@ public class Entity {
 		}
 
 
-		private boolean containmentValue(String field, String[] fRangeArrStr) {
+		private boolean containmentValue(String field, Object fValue) {
+			
+			List<String> rightFields = new ArrayList<String>();
+			
+			rightFields.add("indic_bt");
+			
+			rightFields.add("nace_r2");
+			
+			rightFields.add("s_adj");
+			
+			rightFields.add("unit");
+			
+			rightFields.add("country");
+			
+			if( !rightFields.contains(field) ) return false;
+			
+			if( !(fValue instanceof String[]) ) return false;
+			
+			List<String> s = Arrays.asList((String[])fValue);
+			
+			
+			switch(field)
+			{
+				case "indic_bt": return (s.contains( this.getIndic() ));
+				
+				case "nace_r2": return (s.contains( String.valueOf( this.getNace() ) ));
+				
+				case "s_adj": return (s.contains( this.getAdj() ));
+				
+				case "unit": return (s.contains( this.getUnit() ));
+				
+				case "country": return (s.contains( this.getCountry() ));
+			}
 			
 			return false;
 		}
@@ -310,18 +342,96 @@ public class Entity {
 
 		private boolean greaterValue(String field, Object fValue) {
 			
+			int annoMinimo = Data.getAnnoMinimo();
+			int annoMassimo = Data.getAnnoMassimo();
+			List<String> rightFields = new ArrayList<String>();
+			
+			for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
+				rightFields.add( String.valueOf(y) );	
+			
+			
+			if( !rightFields.contains(field) ) return false;
+			
+			for(NData n : this.getIndexes())
+			{
+				if( n.getYear() == Integer.parseInt((String)field) )
+				{
+					if(fValue instanceof String )
+						return n.getValue() > Double.parseDouble((String)field);
+						
+					if( fValue instanceof Long)
+						return n.getValue() > (Long)fValue;
+						
+					if(fValue instanceof Double )
+						return n.getValue() > (Double)fValue;
+					
+					return false;
+				}
+			}
+		
 			return false;
 		}
 
 
-		private boolean checkValue(String field, double min, double max) {
+		private boolean checkValue(String field, Object min, Object max) {
 			
-			return false;
+			return this.lowerValue(field, max) && this.greaterValue(field, min)	&& this.equalValue(field, max) && this.equalValue(field, min);
 		}
 
 
-		private boolean equalValue(String field, Object object) {
+		private boolean equalValue(String field, Object fValue) {
 			
+			int annoMinimo = Data.getAnnoMinimo();
+			int annoMassimo = Data.getAnnoMassimo();
+			List<String> rightFields = new ArrayList<String>();
+			
+			rightFields.add("indic_bt");
+			
+			rightFields.add("nace_r2");
+			
+			rightFields.add("s_adj");
+			
+			rightFields.add("unit");
+			
+			rightFields.add("country");
+			
+			for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
+				rightFields.add( String.valueOf(y) );	
+			
+			
+			if( !rightFields.contains(field) ) return false;
+			
+			switch(field)
+			{
+				case "indic_bt": return ( fValue instanceof String && ((String)fValue).equals(this.getIndic()) );
+				
+				case "nace_r2": return ( fValue instanceof String && ((String)fValue).equals( String.valueOf(this.getNace()) ) );
+				
+				case "s_adj": return ( fValue instanceof String && ((String)fValue).equals( this.getAdj() ) );
+				
+				case "unit": return ( fValue instanceof String && ((String)fValue).equals( this.getUnit() ) );
+				
+				case "country": return ( fValue instanceof String && ((String)fValue).equals( this.getCountry() ) );
+				
+			}
+			
+			for(NData n : this.getIndexes())
+			{
+				if( n.getYear() == Integer.parseInt((String)field) )
+				{
+					if( fValue instanceof String )
+						return n.getValue() == Double.parseDouble((String)fValue);
+						
+					if( fValue instanceof Long)
+						return n.getValue() == (Long)fValue;
+						
+					if( fValue instanceof Double )
+						return n.getValue() == (Double)fValue;
+					
+					return false;
+				}
+			}
+		
 			return false;
 		}
 }
