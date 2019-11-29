@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import univpm.op.project.data.Data;
 import univpm.op.project.utils.Utils;
 
 public class Entity {
@@ -176,7 +177,7 @@ public class Entity {
 						objectArr = fRange.toArray();
 						fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
 						
-						isTrue = !( this.equalValue( (String)field, fRangeArrStr ) );
+						isTrue = !( this.containmentValue( (String)field, fRangeArrStr ) );
 						
 						if(!isTrue) return false;
 						
@@ -187,7 +188,7 @@ public class Entity {
 						objectArr = fRange.toArray();
 						fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
 
-						isTrue = this.equalValue( (String)field, fRangeArrStr );
+						isTrue = this.containmentValue( (String)field, fRangeArrStr );
 						
 						if(!isTrue) return false;
 						
@@ -263,30 +264,64 @@ public class Entity {
 }
 				
 			}
+			return true;
+		}
+
+
+		private boolean containmentValue(String field, String[] fRangeArrStr) {
+			
 			return false;
 		}
 
 
-		private boolean lowerValue(String field, Double fValue) {
-			// TODO Auto-generated method stub
+		private boolean lowerValue(String field, Object fValue) {
+			
+			int annoMinimo = Data.getAnnoMinimo();
+			int annoMassimo = Data.getAnnoMassimo();
+			List<String> rightFields = new ArrayList<String>();
+			
+			for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
+				rightFields.add( String.valueOf(y) );	
+			
+			
+			if( !rightFields.contains(field) ) return false;
+			
+			for(NData n : this.getIndexes())
+			{
+				if( n.getYear() == Integer.parseInt((String)field) )
+				{
+					if( fValue instanceof String )
+						return n.getValue() < Double.parseDouble((String)fValue);
+						
+					if( fValue instanceof Long)
+						return n.getValue() < (Long)fValue;
+						
+					if( fValue instanceof Double )
+						return n.getValue() < (Double)fValue;
+					
+					return false;
+				}
+			}
+		
 			return false;
 		}
 
 
-		private boolean greaterValue(String field, Double fValue) {
-			// TODO Auto-generated method stub
+
+		private boolean greaterValue(String field, Object fValue) {
+			
 			return false;
 		}
 
 
 		private boolean checkValue(String field, double min, double max) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 
 
 		private boolean equalValue(String field, Object object) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 }
