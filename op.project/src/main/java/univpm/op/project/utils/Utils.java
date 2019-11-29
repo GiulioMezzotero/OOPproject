@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 import univpm.op.project.StringName;
 
@@ -42,6 +43,11 @@ public abstract class Utils {
 			System.err.println("Errore");
 			System.exit(-1);
 		}
+	}
+
+	public static List<String> getRightFields() {
+		
+		return null;
 	}
 
 }

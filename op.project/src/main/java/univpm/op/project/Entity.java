@@ -3,6 +3,11 @@ package univpm.op.project;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import univpm.op.project.utils.Utils;
+
 public class Entity {
 
 		public String indic_bt;
@@ -80,6 +85,43 @@ public class Entity {
 		public void setIndexes(List<NData> indexes) {
 			this.indexes = indexes;
 		}
+		
+		
+		@SuppressWarnings("unused")
+		public boolean filterApplication(JSONObject JSONfilters)
+		{
+			
+			for( Object keyfield_obj : JSONfilters.keySet() )
+			{
+				String field = (String)keyfield_obj;
+				
+				List<String> rightFields = Utils.getRightFields();
+				
+				if( !rightFields.contains( field ) ) return false;
+					
+				
+				JSONObject fInfo = (JSONObject)JSONfilters.get(field);
+				
+				
+				for(Object fType : fInfo.keySet() )
+				{
+					
+					String filter = (String)fType;
+						
+					JSONArray fRange, fArr;
+					JSONObject[] fObjectArr;
+					Object generic_object;
+					Object[] objectArr;
+					String[] fRangeArrStr;
+					Double[] fRangeArrDouble;
+					Double fValue;
+					String fString;
+					boolean isTrue;
+					
 
-
+}
+				
+			}
+			return false;
+		}
 }
