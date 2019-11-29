@@ -1,6 +1,7 @@
 package univpm.op.project;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -118,10 +119,100 @@ public class Entity {
 					String fString;
 					boolean isTrue;
 					
+					switch (filter) 
+					
+					{
+					
+					//Logical Operators
+					case "$and":
+						fArr = (JSONArray)fInfo.get(fType);
+						fObjectArr = (JSONObject[]) fArr.toArray();
+						
+						isTrue = true;
+						for(JSONObject obj : fObjectArr)
+						{
+							Object[] keys = obj.keySet().toArray();
+							for( Object t : keys )
+							{
+								isTrue = isTrue && this.equalValue((String)field, obj.get(t));
+								if(!isTrue) break;
+							}
+						}
+						
+						if(!isTrue) return false;
+						
+						break;
+						
+					case "$or":
+						fArr = (JSONArray)fInfo.get(fType);
+						fObjectArr = (JSONObject[]) fArr.toArray();
+						
+						isTrue = false;
+						for(JSONObject js : fObjectArr)
+						{
+							Object[] keys = js.keySet().toArray();
+							for( Object k : keys )
+							{
+								isTrue = isTrue || this.equalValue((String)field, js.get(k));
+								if(isTrue) break;
+							}							
+						}
+						
+						if(!isTrue) return false;
+						
+						break;       
+					
+					case "$not":
+						fString = (String)fInfo.get(fType);
+						
+						isTrue = !( this.equalValue((String)filter, fString ) );
+
+						if(!isTrue) return false;
+						
+						break;
+						
+					case "$nin":
+						fRange = (JSONArray)fInfo.get(fType);
+						objectArr = fRange.toArray();
+						fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
+						
+						isTrue = !( this.equalValue( (String)field, fRangeArrStr ) );
+						
+						if(!isTrue) return false;
+						
+						break;
+						
+					case "$in":
+						fRange = (JSONArray)fInfo.get(fType);
+						objectArr = fRange.toArray();
+						fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
+
+						isTrue = this.equalValue( (String)field, fRangeArrStr );
+						
+						if(!isTrue) return false;
+						
+						break;
+						
+		         
+						
+					}
+			
 
 }
 				
 			}
+			return false;
+		}
+
+
+		private boolean checkValue(String field, double min, double max) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		private boolean equalValue(String field, Object object) {
+			// TODO Auto-generated method stub
 			return false;
 		}
 }
