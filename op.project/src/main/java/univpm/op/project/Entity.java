@@ -193,7 +193,69 @@ public class Entity {
 						
 						break;
 						
-		         
+						 //Conditional operators 
+					case "$bt":
+						fRange = (JSONArray)fInfo.get(fType);
+						
+						objectArr = fRange.toArray();
+						fRangeArrDouble = Arrays.copyOf(objectArr, objectArr.length, Double[].class);
+						
+						isTrue = checkValue(field, Math.min(fRangeArrDouble[0], fRangeArrDouble[1]), Math.max(fRangeArrDouble[0], fRangeArrDouble[1]) );
+						if(!isTrue) return false;
+						break;
+					
+					case "$gt":
+						generic_object = fInfo.get(fType);
+						if( generic_object instanceof Long )
+						{
+							fValue = ((Long)generic_object).doubleValue();
+						}else {
+							fValue = (Double)generic_object;
+						}
+						isTrue = this.greaterValue(field, fValue);
+						if(!isTrue) return false;
+						break;
+						
+					case "$gte":
+						generic_object = fInfo.get(fType);
+						if( generic_object instanceof Long )
+						{
+							fValue = ((Long)generic_object).doubleValue();
+						}else {
+							fValue = (Double)generic_object;
+						}
+						
+						isTrue = this.greaterValue(field, fValue);
+						if(!isTrue) return false;
+						isTrue = isTrue || this.greaterValue(field, fValue);
+						if(!isTrue) return false;
+						break;
+						
+					case "$lt":
+						generic_object = fInfo.get(fType);
+						if( generic_object instanceof Long )
+						{
+							fValue = ((Long)generic_object).doubleValue();
+						}else {
+							fValue = (Double)generic_object;
+						}
+						isTrue = this.lowerValue(field, fValue);
+						if(!isTrue) return false;
+						break;
+						
+					case "$lte":
+						generic_object = fInfo.get(fType);
+						if( generic_object instanceof Long )
+						{
+							fValue = ((Long)generic_object).doubleValue();
+						}else {
+							fValue = (Double)generic_object;
+						}
+						isTrue = this.lowerValue(field, fValue);
+						if(!isTrue) return false;
+						isTrue = isTrue || this.equalValue(field, fValue);
+						if(!isTrue) return false;
+						break;
 						
 					}
 			
@@ -201,6 +263,18 @@ public class Entity {
 }
 				
 			}
+			return false;
+		}
+
+
+		private boolean lowerValue(String field, Double fValue) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		private boolean greaterValue(String field, Double fValue) {
+			// TODO Auto-generated method stub
 			return false;
 		}
 
