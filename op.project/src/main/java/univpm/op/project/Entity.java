@@ -18,7 +18,7 @@ public class Entity {
 		public String country;
 		public List<NData> indexes;
 
-		Entity() {
+		public Entity() {
 			indexes = new ArrayList<NData>();
 		}
 

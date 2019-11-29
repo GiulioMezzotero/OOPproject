@@ -4,7 +4,7 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import univpm.op.project.Data;
+import univpm.op.project.data.Data;
 
 @RestController
 public class Controller {

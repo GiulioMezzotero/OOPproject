@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import univpm.op.project.StringName;
+import univpm.op.project.data.StringName;
 
 
 public abstract class Utils {

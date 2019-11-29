@@ -5,7 +5,7 @@ public class NData {
 	public int year;
 	public double index;
 
-	NData(int year, double index) {
+	public NData(int year, double index) {
 		this.year = year;
 		this.index = index;
 	}

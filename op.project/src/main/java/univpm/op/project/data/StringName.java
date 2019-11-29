@@ -1,4 +1,4 @@
-package univpm.op.project;
+package univpm.op.project.data;
 
 public abstract class StringName {
 

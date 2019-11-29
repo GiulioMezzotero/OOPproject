@@ -1,4 +1,4 @@
-package univpm.op.project;
+package univpm.op.project.data;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +9,11 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import univpm.op.project.Entity;
+import univpm.op.project.HTCustom;
+import univpm.op.project.NData;
+import univpm.op.project.NumericAnalysis;
+
 public class Data {
 	
 	public static List<Entity> data = new ArrayList<Entity>();
@@ -16,6 +21,7 @@ public class Data {
 	public static void addEntity(Entity e) {
 		data.add(e);
 	}
+
 
 @SuppressWarnings("unchecked")
 public static JSONObject getJSONData() {
