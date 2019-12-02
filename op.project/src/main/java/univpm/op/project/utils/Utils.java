@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
+import univpm.op.project.data.Data;
 import univpm.op.project.data.StringName;
 
 
@@ -47,7 +49,23 @@ public abstract class Utils {
 
 	public static List<String> getRightFields() {
 		
-		return null;
+		int annoMinimo = Data.getAnnoMinimo();
+		int annoMassimo = Data.getAnnoMassimo();
+		
+		List<String> rightFields = new ArrayList<String>();
+		rightFields.add("indic_bt");
+		rightFields.add("nace_r2");
+		rightFields.add("s_adj");
+		rightFields.add("unit");
+		rightFields.add("country");
+		
+		for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
+		{
+			rightFields.add( String.valueOf(y) );	
+		}
+		
+		return rightFields;
+		
 	}
 
 }
