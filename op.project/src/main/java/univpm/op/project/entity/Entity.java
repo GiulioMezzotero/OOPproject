@@ -1,4 +1,4 @@
-package univpm.op.project;
+package univpm.op.project.entity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import univpm.op.project.NData;
 import univpm.op.project.data.Data;
 import univpm.op.project.utils.Utils;
 
