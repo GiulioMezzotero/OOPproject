@@ -15,7 +15,7 @@ public class HTCustom<T1, T2> extends Hashtable {
 		this.put(key, newValue);
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked" })
 	public void setIncKey(T1 key) {
 		
         if(!(key instanceof String)) return;

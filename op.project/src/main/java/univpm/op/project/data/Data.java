@@ -9,7 +9,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import univpm.op.project.Entity;
+import univpm.op.project.entity.Entity;
 import univpm.op.project.HTCustom;
 import univpm.op.project.NData;
 import univpm.op.project.NumericAnalysis;
