@@ -8,8 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.JSONObject;
-
 import univpm.op.project.data.Data;
 import univpm.op.project.data.StringName;
 
@@ -68,35 +66,4 @@ public abstract class Utils {
 		
 		return rightFields;
 }
-	
-	@SuppressWarnings("unchecked")
-	public static JSONObject validFilter( JSONObject JSONfilter )
-	{
-		int annoMinimo = Data.getAnnoMinimo();
-		int annoMassimo = Data.getAnnoMassimo();
-		
-		List<String> rightFields = Utils.getRightFields();
-		
-		JSONObject filteredData = new JSONObject();
-		
-		Object[] key = JSONfilter.keySet().toArray();
-		
-		for( int i = 0; i < key.length; i++ )
-		{
-			Object k = key[i];
-			
-			if(! (k instanceof String ) )
-			{
-				filteredData.put("ERRORE", "Ci sono delle chiavi non valide");
-				filteredData.put("ChiaveNonValida", k);
-				return filteredData;
-			}
-			
-			String filterAttribute = (String)k;
-		}
-		
-		return filteredData;
-		
-}			
-
 }
