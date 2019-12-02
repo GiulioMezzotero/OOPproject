@@ -1,8 +1,6 @@
 package univpm.op.project.controller;
-
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,7 +28,6 @@ public class Controller {
     }
 
     @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/get/metadata", method = RequestMethod.GET, produces="application/json")
     public String metaGet( )
     {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -49,6 +46,17 @@ public class Controller {
 			return obj.toString();
 		}		
     }
+
+    public JSONObject getAnalytics()
+	{
+		return Data.DataAnalytic( Data.getData() );
+	}
+	
+
+
+
+
+
 
 }
    
