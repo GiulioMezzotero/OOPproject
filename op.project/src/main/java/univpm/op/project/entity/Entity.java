@@ -1,13 +1,15 @@
 package univpm.op.project.entity;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import univpm.op.project.NData;
 import univpm.op.project.data.Data;
 import univpm.op.project.utils.Utils;
 
@@ -17,16 +19,21 @@ public class Entity {
 		public String nace_r2;
 		public String s_adj;
 		public String unit;
-		public String country;
-		public List<NData> indexes;
+		public String country; 
+		public Map<Integer, Double> indexes;
 
 		public Entity() {
-			indexes = new ArrayList<NData>();
+			indexes = new HashMap<Integer, Double>();
 		}
 
 
-		public void addIndexes(NData n) {
-			indexes.add(n);
+		public Map<Integer, Double> getIndexes() {
+			return indexes;
+		}
+
+
+		public void setIndexes(Map<Integer, Double> indexes) {
+			this.indexes = indexes;
 		}
 
 
@@ -78,19 +85,8 @@ public class Entity {
 		public void setCountry(String country) {
 			this.country = country;
 		}
-
-
-		public List<NData> getIndexes() {
-			return indexes;
-		}
-
-
-		public void setIndexes(List<NData> indexes) {
-			this.indexes = indexes;
-		}
 		
 		
-		@SuppressWarnings("unused")
 		public boolean filterApplication(JSONObject JSONfilters)
 		{
 			
@@ -267,21 +263,12 @@ public class Entity {
 			}
 			return true;
 		}
+		
 
-
-		private boolean containmentValue(String field, Object fValue) {
+	
+private boolean containmentValue(String field, Object fValue) {
 			
-			List<String> rightFields = new ArrayList<String>();
-			
-			rightFields.add("indic_bt");
-			
-			rightFields.add("nace_r2");
-			
-			rightFields.add("s_adj");
-			
-			rightFields.add("unit");
-			
-			rightFields.add("country");
+			List<String> rightFields = Utils.getRightFields();
 			
 			if( !rightFields.contains(field) ) return false;
 			
@@ -319,18 +306,20 @@ public class Entity {
 			
 			if( !rightFields.contains(field) ) return false;
 			
-			for(NData n : this.getIndexes())
+			Map<Integer, Double> indexes = this.getIndexes();
+			
+			for(Integer year : indexes.keySet())
 			{
-				if( n.getYear() == Integer.parseInt((String)field) )
+				if( year == Integer.parseInt((String)field) )
 				{
 					if( fValue instanceof String )
-						return n.getValue() < Double.parseDouble((String)fValue);
+						return indexes.get(year) < Double.parseDouble((String)fValue);
 						
 					if( fValue instanceof Long)
-						return n.getValue() < (Long)fValue;
+						return indexes.get(year) < (Long)fValue;
 						
 					if( fValue instanceof Double )
-						return n.getValue() < (Double)fValue;
+						return indexes.get(year) < (Double)fValue;
 					
 					return false;
 				}
@@ -353,18 +342,20 @@ public class Entity {
 			
 			if( !rightFields.contains(field) ) return false;
 			
-			for(NData n : this.getIndexes())
+			Map<Integer, Double> indexes = this.getIndexes();
+			
+			for(Integer year : indexes.keySet())
 			{
-				if( n.getYear() == Integer.parseInt((String)field) )
+				if( year == Integer.parseInt((String)field) )
 				{
 					if(fValue instanceof String )
-						return n.getValue() > Double.parseDouble((String)field);
+						return indexes.get(year) > Double.parseDouble((String)field);
 						
 					if( fValue instanceof Long)
-						return n.getValue() > (Long)fValue;
+						return indexes.get(year) > (Long)fValue;
 						
 					if(fValue instanceof Double )
-						return n.getValue() > (Double)fValue;
+						return indexes.get(year) > (Double)fValue;
 					
 					return false;
 				}
@@ -416,18 +407,22 @@ public class Entity {
 				
 			}
 			
-			for(NData n : this.getIndexes())
+			Map<Integer, Double> indexes = this.getIndexes();
+			
+			
+			
+			for(Integer year : indexes.keySet())
 			{
-				if( n.getYear() == Integer.parseInt((String)field) )
+				if( year == Integer.parseInt((String)field) )
 				{
 					if( fValue instanceof String )
-						return n.getValue() == Double.parseDouble((String)fValue);
+						return indexes.get(year) == Double.parseDouble((String)fValue);
 						
 					if( fValue instanceof Long)
-						return n.getValue() == (Long)fValue;
+						return indexes.get(year) == Double.longBitsToDouble((Long)fValue);
 						
 					if( fValue instanceof Double )
-						return n.getValue() == (Double)fValue;
+						return indexes.get(year) == (Double)fValue;
 					
 					return false;
 				}

@@ -1,6 +1,7 @@
 package univpm.op.project.data;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import org.json.simple.JSONObject;
 
 import univpm.op.project.entity.Entity;
 import univpm.op.project.utils.Utils;
-import univpm.op.project.NData;
 import univpm.op.project.NumericAnalysis;
 
 public class Data {
