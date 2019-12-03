@@ -4,13 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import univpm.op.project.entity.Entity;
-import univpm.op.project.HTCustom;
+import univpm.op.project.utils.Utils;
 import univpm.op.project.NData;
 import univpm.op.project.NumericAnalysis;
 
@@ -41,10 +43,15 @@ public static JSONObject getJSONData() {
 
 
 			JSONObject dataObj = new JSONObject();  //indici: lista degli NData
-			for (NData nd : e.getIndexes())
+			
+			Map<Integer, Double> indexes = e.getIndexes();
+			
+			for(Integer key : indexes.keySet())
 			{
-				dataObj.put(nd.getYear(), nd.getValue());				
+				dataObj.put(key, indexes.get(key));	
 			}
+			
+			
 
 			entityObject.put("Data", dataObj );
 
@@ -62,14 +69,14 @@ public static JSONObject getJSONData() {
 	
 	
 	
-public static List<Entity> getData() {
-	
-	return data;
-}
+	public static List<Entity> getData() {
+		
+		return data;
+	}
 
 	
 
-	public static void DataParsing( String file )
+	public static void dataParsing( String file )
 	{
 		
 		System.out.println("PARSING DEL FILE \""+file+"\".");
@@ -86,7 +93,7 @@ public static List<Entity> getData() {
             for(String lineData; (lineData = bufferedReader.readLine()) != null; )
             {
             	Entity e = new Entity();
-
+            	Map<Integer, Double> datiAnnuali = new HashMap<Integer, Double>();
 
             	entityData = lineData.split("[,\\t]");
 
@@ -96,28 +103,19 @@ public static List<Entity> getData() {
                 e.setUnit( entityData[3].trim() );
                 e.setCountry( entityData[4].trim() );
 
+
                 int i;
             	for( i = 5; i < headingData.length && i < entityData.length ; i++ )
             	{
             		if( !entityData[i].trim().split(" ")[0].equals(":") )
             		{
-                		NData n;
-                		n = new NData( Integer.parseInt( headingData[i].trim() ), Double.parseDouble( entityData[i].trim().split(" ")[0] ) );
-                		e.addIndexes( n );
+            			datiAnnuali.put(Integer.parseInt( headingData[i].trim() ), Double.parseDouble( entityData[i].trim().split(" ")[0] ));
             		} else {
-            			NData n;
-                		n = new NData( Integer.parseInt( headingData[i].trim() ), 0 );
-                		e.addIndexes( n );
+            			datiAnnuali.put(Integer.parseInt( headingData[i].trim() ), (double) 0);
             		}
             	}
             	
-            	for( ; i < headingData.length; i++ )
-            	{
-            		NData n;
-            		n = new NData( Integer.parseInt( headingData[i].trim() ), 0 );
-            		e.addIndexes( n );	
-            	}
-            
+            	e.setIndexes(datiAnnuali);
 
             	Data.addEntity(e);
             }
@@ -131,48 +129,19 @@ public static List<Entity> getData() {
 		}
 		System.out.println("PARSING EFFETTUATO");
 		// FINE PARSING
+
 	}
 
 	
 	public static int getAnnoMinimo()
 	{
-		return Data.getAnnoMinimo( Data.getData() );
+		return 1992;
 	}
-	
-	
-	public static int getAnnoMinimo( List<Entity> data )
-	{
-		int annoMinimo=3000;
-		
-		
-		for (NData n : data.get(0).getIndexes() )
-		{
-			int year = n.getYear();
-			if(annoMinimo > year) annoMinimo = year;
-		}
-		return annoMinimo;
-		
-}
 	
 	public static int getAnnoMassimo()
 	{
-		return Data.getAnnoMassimo( Data.getData() );
+		return 2018;
 	}
-	
-
-	
-	public static int getAnnoMassimo( List<Entity> data )
-	{
-		int annoMassimo = 0;		
-		
-		for (NData n : data.get(0).getIndexes() )
-		{
-			int year = n.getYear();
-			if(annoMassimo < year) annoMassimo = year;
-		}
-		return annoMassimo;
-	}
-	
 	
 	
 	@SuppressWarnings("unchecked")
@@ -185,7 +154,7 @@ public static List<Entity> getData() {
 			return x;
 		}
 		
-		int annoMinimo = Data.getAnnoMinimo( data );
+		int annoMinimo = getAnnoMinimo();
 		
 		NumericAnalysis[] n = new NumericAnalysis[ data.get(0).getIndexes().size() ];
 		for( int i = 0; i < n.length; i++ )
@@ -194,27 +163,29 @@ public static List<Entity> getData() {
 		JSONObject analysisObj = new JSONObject();
 		JSONArray analysisArr = new JSONArray();
 
-		HTCustom<String, Integer> indicbtHT = new HTCustom<String, Integer>();
-		HTCustom<String, Integer> nacer2HT = new HTCustom<String, Integer>();
-		HTCustom<String, Integer> sadjHT= new HTCustom<String, Integer>();
-		HTCustom<String, Integer> unitHT = new HTCustom<String, Integer>();
-		HTCustom<String, Integer> countryHT = new HTCustom<String, Integer>();
+		Map<String, Integer> indicbtHT = new HashMap<String, Integer>();
+		Map<String, Integer> nacer2HT = new HashMap<String, Integer>();
+		Map<String, Integer> sadjHT= new HashMap<String, Integer>();
+		Map<String, Integer> unitHT = new HashMap<String, Integer>();
+		Map<String, Integer> countryHT = new HashMap<String, Integer>();
 
 		
 		
 		for (Entity e : data)
 		{
 		
-			indicbtHT.setIncKey( e.getIndic() );
-			nacer2HT.setIncKey( e.getNace() );
-			sadjHT.setIncKey( String.valueOf( e.getAdj() ) );
-			unitHT.setIncKey( e.getUnit() );
-			countryHT.setIncKey( e.getCountry() );
+			indicbtHT = Utils.setIncKey( indicbtHT, e.getIndic() );
+			nacer2HT = Utils.setIncKey( nacer2HT, e.getNace() );
+			sadjHT = Utils.setIncKey( sadjHT, String.valueOf( e.getAdj() ) );
+			unitHT = Utils.setIncKey( unitHT, e.getUnit() );
+			countryHT = Utils.setIncKey( countryHT, e.getCountry() );
 			
-			for (NData nd : e.getIndexes() )
+			Map<Integer, Double> indexes = e.getIndexes();
+			
+			for(Integer key : indexes.keySet())
 			{
-				int index = nd.getYear() - annoMinimo;
-				n[index].addValue( nd.getValue() );				
+				int index = key - Data.getAnnoMinimo();
+				n[index].addValue( indexes.get(key) );	
 			}
 				
 		}
@@ -233,23 +204,23 @@ public static List<Entity> getData() {
 		JSONObject countryJSONData = new JSONObject();
 		
 		indicbtJSONData.put("Attributo", "indic_bt");
-		indicbtJSONData.put("Dati", indicbtHT.getJSONValues() );
+		indicbtJSONData.put("Dati", Utils.getJSONFromHashMap(indicbtHT) );
 		indicbtJSONData.put("TipoDato", "String" );
 
 		nacer2JSONData.put("Attributo", "nace_r2");
-		nacer2JSONData.put("Dati", nacer2HT.getJSONValues() );
+		nacer2JSONData.put("Dati", Utils.getJSONFromHashMap(nacer2HT) );
 		nacer2JSONData.put("TipoDato", "String" );
 
 		sadjJSONData.put("Attributo", "s_adj");
-		sadjJSONData.put("Dati", sadjHT.getJSONValues() );
+		sadjJSONData.put("Dati", Utils.getJSONFromHashMap(sadjHT) );
 		sadjJSONData.put("TipoDato", "String" );
 
 		unitJSONData.put("Attributo", "unit");
-		unitJSONData.put("Dati", unitHT.getJSONValues() );
+		unitJSONData.put("Dati", Utils.getJSONFromHashMap(unitHT) );
 		unitJSONData.put("TipoDato", "String" );
 
 		countryJSONData.put("Attributo", "country");
-		countryJSONData.put("Dati", countryHT.getJSONValues() );
+		countryJSONData.put("Dati", Utils.getJSONFromHashMap(countryHT) );
 		countryJSONData.put("TipoDato", "String" );
 
 		analysisArr.add( indicbtJSONData );

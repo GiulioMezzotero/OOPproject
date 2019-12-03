@@ -89,9 +89,6 @@ public class Controller {
 		if( ! responseValidator.containsKey("SUCCESS!") )
 			return responseValidator;
 		
-		
-		
-		
 		for( Entity e: Data.getData() )
 		{
 			if( e.filterApplication( jsonFilters ) )
