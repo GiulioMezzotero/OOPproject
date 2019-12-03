@@ -17,6 +17,10 @@ import univpm.op.project.utils.Utils;
 @SpringBootApplication
 public class Application {
 
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args)  {
 	
 			Utils.downloadFile(StringName.URL, StringName.NOMEFILE_JSON);
