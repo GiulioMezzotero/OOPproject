@@ -55,7 +55,7 @@ public class Application {
 				return;
 			}
 			
-			String urlTsv = (String) ((JSONObject) ( (JSONArray) ( (JSONObject) jsonRisposta.get("result") ).get("resources") ).get(0)).get("url");
+			String urlTsv = (String) ((JSONObject) ( (JSONArray) ( (JSONObject) jsonRisposta.get("result") ).get("resources") ).get(1)).get("url");
 			
 			
 			Utils.downloadFile(urlTsv, StringName.NOMEFILE_TSV);

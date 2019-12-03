@@ -2,6 +2,7 @@ package univpm.op.project.data;
 
 import java.io.BufferedReader;
 
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import org.json.simple.JSONObject;
 
 import univpm.op.project.entity.Entity;
 import univpm.op.project.utils.Utils;
-import univpm.op.project.NumericAnalysis;
+import univpm.op.project.utils.NumericAnalysis;
 
 public class Data {
 	
@@ -96,6 +97,8 @@ public static JSONObject getJSONData() {
             	Map<Integer, Double> datiAnnuali = new HashMap<Integer, Double>();
 
             	entityData = lineData.split("[,\\t]");
+            	
+            	if(entityData.length != headingData.length) continue;
 
             	e.setIndic( entityData[0].trim() );
             	e.setNace( entityData[1].trim() );
