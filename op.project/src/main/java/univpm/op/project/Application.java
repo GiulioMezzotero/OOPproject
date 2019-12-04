@@ -14,12 +14,17 @@ import univpm.op.project.data.Data;
 import univpm.op.project.data.StringName;
 import univpm.op.project.utils.Utils;
 
+/**
+ * Classe principale per avvio del progetto Spring
+ * @author Giulio Mezzotero e Giovanni Alessandro Clini
+ *
+ */
 @SpringBootApplication
 public class Application {
 
 	/**
-	 * 
-	 * @param args
+	 * Metodo di avvio 
+	 * @param args argomenti
 	 */
 	public static void main(String[] args)  {
 	
