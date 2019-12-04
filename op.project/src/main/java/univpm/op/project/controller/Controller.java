@@ -34,7 +34,7 @@ public class Controller {
     }
 
     @SuppressWarnings("unchecked")
-    public String getMetadata( )
+    public String getMetadata()  
     {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonSchemaGenerator generatorSchema = new JsonSchemaGenerator(objectMapper);
