@@ -110,12 +110,6 @@ public class Entity {
 				
 				
 				JSONObject fInfo = null;
-
-				try {
-					
-				}catch(Exception e) {
-					throw new InvalidFilterException("Chiave non alfanumerica.");
-				}
 					
 				JSONArray fRange, fArr;
 				JSONObject[] fObjectArr;
@@ -130,11 +124,12 @@ public class Entity {
 			    //controlla se lo applica su valori String
 				if(field.equals("indic_bt") || field.equals("nace_r2") || field.equals("s_adj") || field.equals("unit") || field.equals("country"))
 				{
-					fInfo = (JSONObject)jsonFilters.get(field);
-					for(Object fType : fInfo.keySet() )
-					{
+					try {
+						fInfo = (JSONObject)jsonFilters.get(field);
+						for(Object fType : fInfo.keySet() )
+						{
+						
 					
-						try {
 							String filter = (String)fType;
 							
 							switch(filter) {
@@ -171,87 +166,90 @@ public class Entity {
 									break;
 							}
 							
+						}
+							
 						}catch(Exception e) {
 							throw new InvalidFilterException("Valore del filtro non valido.");
 						}
-					}
+					
 
-				}else if( !field.equals("$or") && !field.equals("$and")) {
+			       }else if( !field.equals("$or") && !field.equals("$and")) {
 					
-					fInfo = (JSONObject)jsonFilters.get(field);
+					try {
+
+						fInfo = (JSONObject)jsonFilters.get(field);
 					
-					for(Object fType : fInfo.keySet() )
-					{
-						String filter = (String)fType;
-						try {
-	                      switch (filter) {
-	                  	  
-	 						case "$bt":
-	 							fRange = (JSONArray)fInfo.get(filter);
-	 							
-	 							objectArr = fRange.toArray();
-	 							fRangeArrDouble = Arrays.copyOf(objectArr, objectArr.length, Double[].class);
-	 							
-	 							isTrue = checkValue(field, Math.min(fRangeArrDouble[0], fRangeArrDouble[1]), Math.max(fRangeArrDouble[0], fRangeArrDouble[1]) );
-	 							if(!isTrue) return false;
-	 							break;
-	 						
-	 						case "$gt":
-	 							generic_object = fInfo.get(filter);
-	 							if( generic_object instanceof Long )
-	 							{
-	 								fValue = ((Long)generic_object).doubleValue();
-	 							}else {
-	 								fValue = (Double)generic_object;
-	 							}
-	 							isTrue = this.greaterValue(field, fValue);
-	 							if(!isTrue) return false;
-	 							break;
-	 							
-	 						case "$gte":
-	 							generic_object = fInfo.get(filter);
-	 							if( generic_object instanceof Long )
-	 							{
-	 								fValue = ((Long)generic_object).doubleValue();
-	 							}else {
-	 								fValue = (Double)generic_object;
-	 							}
-	 							
-	 							isTrue = this.greaterValue(field, fValue);
-	 							isTrue = isTrue || this.equalValue(field, fValue);
-	 							if(!isTrue) return false;
-	 							break;
-	 							
-	 						case "$lt":
-	 							generic_object = fInfo.get(filter);
-	 							if( generic_object instanceof Long )
-	 							{
-	 								fValue = ((Long)generic_object).doubleValue();
-	 							}else {
-	 								fValue = (Double)generic_object;
-	 							}
-	 							isTrue = this.lowerValue(field, fValue);
-	 							if(!isTrue) return false;
-	 							break;
-	 							
-	 						case "$lte":
-	 							generic_object = fInfo.get(filter);
-	 							if( generic_object instanceof Long )
-	 							{
-	 								fValue = ((Long)generic_object).doubleValue();
-	 							}else {
-	 								fValue = (Double)generic_object;
-	 							}
-	 							isTrue = this.lowerValue(field, fValue);
-	 							isTrue = isTrue || this.equalValue(field, fValue);
-	 							if(!isTrue) return false;
-	 							break;
-	                      }
-						} catch (Exception e) {
-							throw new InvalidFilterException("Valore del filtro non valido.");
+						for(Object fType : fInfo.keySet() )
+						{
+							String filter = (String)fType;
+		                      switch (filter) {
+		                  	  
+		 						case "$bt":
+		 							fRange = (JSONArray)fInfo.get(filter);
+		 							
+		 							objectArr = fRange.toArray();
+		 							fRangeArrDouble = Arrays.copyOf(objectArr, objectArr.length, Double[].class);
+		 							
+		 							isTrue = checkValue(field, Math.min(fRangeArrDouble[0], fRangeArrDouble[1]), Math.max(fRangeArrDouble[0], fRangeArrDouble[1]) );
+		 							if(!isTrue) return false;
+		 							break;
+		 						
+		 						case "$gt":
+		 							generic_object = fInfo.get(filter);
+		 							if( generic_object instanceof Long )
+		 							{
+		 								fValue = ((Long)generic_object).doubleValue();
+		 							}else {
+		 								fValue = (Double)generic_object;
+		 							}
+		 							isTrue = this.greaterValue(field, fValue);
+		 							if(!isTrue) return false;
+		 							break;
+		 							
+		 						case "$gte":
+		 							generic_object = fInfo.get(filter);
+		 							if( generic_object instanceof Long )
+		 							{
+		 								fValue = ((Long)generic_object).doubleValue();
+		 							}else {
+		 								fValue = (Double)generic_object;
+		 							}
+		 							
+		 							isTrue = this.greaterValue(field, fValue);
+		 							isTrue = isTrue || this.equalValue(field, fValue);
+		 							if(!isTrue) return false;
+		 							break;
+		 							
+		 						case "$lt":
+		 							generic_object = fInfo.get(filter);
+		 							if( generic_object instanceof Long )
+		 							{
+		 								fValue = ((Long)generic_object).doubleValue();
+		 							}else {
+		 								fValue = (Double)generic_object;
+		 							}
+		 							isTrue = this.lowerValue(field, fValue);
+		 							if(!isTrue) return false;
+		 							break;
+		 							
+		 						case "$lte":
+		 							generic_object = fInfo.get(filter);
+		 							if( generic_object instanceof Long )
+		 							{
+		 								fValue = ((Long)generic_object).doubleValue();
+		 							}else {
+		 								fValue = (Double)generic_object;
+		 							}
+		 							isTrue = this.lowerValue(field, fValue);
+		 							isTrue = isTrue || this.equalValue(field, fValue);
+		 							if(!isTrue) return false;
+		 							break;
+		                      }
 						}
+					} catch (Exception e) {
+						throw new InvalidFilterException("Valore del filtro non valido.");
 					}
-				}else {
+			}else {
 					// AND E OR
 					switch (field)
 					{
