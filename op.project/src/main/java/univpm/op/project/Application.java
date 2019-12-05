@@ -60,7 +60,20 @@ public class Application {
 				return;
 			}
 			
-			String urlTsv = (String) ((JSONObject) ( (JSONArray) ( (JSONObject) jsonRisposta.get("result") ).get("resources") ).get(1)).get("url");
+			JSONArray arrayLink = ( (JSONArray) ( (JSONObject) jsonRisposta.get("result") ).get("resources") );
+			
+			String urlTsv = "";
+			
+			for(Object jObj : arrayLink)
+			{
+				JSONObject j = (JSONObject)jObj;
+				
+				if( ((String)j.get("description")).equals("Download dataset in TSV format (unzipped)") )
+				{
+					urlTsv = (String)j.get("url");
+					break;
+				}
+			}
 			
 			
 			Utils.downloadFile(urlTsv, StringName.NOMEFILE_TSV);
