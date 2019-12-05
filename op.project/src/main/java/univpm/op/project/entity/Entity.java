@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import univpm.op.project.data.Data;
+import univpm.op.project.exception.InvalidFilterException;
 import univpm.op.project.utils.Utils;
 
 public class Entity {
@@ -87,186 +88,225 @@ public class Entity {
 		}
 		
 		
-		public boolean filterApplication(JSONObject JSONfilters)
+		public boolean filterApplication(JSONObject jsonFilters) throws InvalidFilterException
 		{
 			
-			for( Object keyfield_obj : JSONfilters.keySet() )
+			for( Object keyfield_obj : jsonFilters.keySet() )
 			{
-				String field = (String)keyfield_obj;
+				String field;
+				try {
+					field = (String)keyfield_obj;
+				}catch(Exception e) {
+					throw new InvalidFilterException("Chiave non alfanumerica.");
+				}
 				
 				List<String> rightFields = Utils.getRightFields();
 				
-				if( !rightFields.contains( field ) ) return false;
-					
-				
-				JSONObject fInfo = (JSONObject)JSONfilters.get(field);
-				
-				
-				for(Object fType : fInfo.keySet() )
+				if( !rightFields.contains( field ) && !field.equals("$and") && !field.equals("$or"))
 				{
+					throw new InvalidFilterException("Chiave non valida.");
+				}
 					
-					String filter = (String)fType;
-						
-					JSONArray fRange, fArr;
-					JSONObject[] fObjectArr;
-					Object generic_object;
-					Object[] objectArr;
-					String[] fRangeArrStr;
-					Double[] fRangeArrDouble;
-					Double fValue;
-					String fString;
-					boolean isTrue;
+				
+				
+				JSONObject fInfo = null;
+
+				try {
 					
-					switch (filter) 
+				}catch(Exception e) {
+					throw new InvalidFilterException("Chiave non alfanumerica.");
+				}
 					
+				JSONArray fRange, fArr;
+				JSONObject[] fObjectArr;
+				Object generic_object;
+				Object[] objectArr;
+				String[] fRangeArrStr;
+				Double[] fRangeArrDouble;
+				Double fValue;
+				String fString;
+				boolean isTrue;
+				
+			    //controlla se lo applica su valori String
+				if(field.equals("indic_bt") || field.equals("nace_r2") || field.equals("s_adj") || field.equals("unit") || field.equals("country"))
+				{
+					fInfo = (JSONObject)jsonFilters.get(field);
+					for(Object fType : fInfo.keySet() )
 					{
 					
-					//Logical Operators
-					case "$and":
-						fArr = (JSONArray)fInfo.get(fType);
-						fObjectArr = (JSONObject[]) fArr.toArray();
-						
-						isTrue = true;
-						for(JSONObject obj : fObjectArr)
-						{
-							Object[] keys = obj.keySet().toArray();
-							for( Object t : keys )
+						try {
+							String filter = (String)fType;
+							
+							switch(filter) {
+							
+								case "$not":
+									fString = (String)fInfo.get(filter);
+									
+									isTrue = !( this.equalValue((String)field, fString ) );
+			
+									if(!isTrue) return false;
+									
+									break;
+									
+								case "$nin":
+									fRange = (JSONArray)fInfo.get(filter);
+									objectArr = fRange.toArray();
+									fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
+									
+									isTrue = !( this.containmentValue( (String)field, fRangeArrStr ) );
+									
+									if(!isTrue) return false;
+									
+									break;
+									
+								case "$in":
+									fRange = (JSONArray)fInfo.get(filter);
+									objectArr = fRange.toArray();
+									fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
+			
+									isTrue = this.containmentValue( (String)field, fRangeArrStr );
+									
+									if(!isTrue) return false;
+									
+									break;
+							}
+							
+						}catch(Exception e) {
+							throw new InvalidFilterException("Valore del filtro non valido.");
+						}
+					}
+
+				}else if( !field.equals("$or") && !field.equals("$and")) {
+					
+					fInfo = (JSONObject)jsonFilters.get(field);
+					
+					for(Object fType : fInfo.keySet() )
+					{
+						String filter = (String)fType;
+						try {
+	                      switch (filter) {
+	                  	  
+	 						case "$bt":
+	 							fRange = (JSONArray)fInfo.get(filter);
+	 							
+	 							objectArr = fRange.toArray();
+	 							fRangeArrDouble = Arrays.copyOf(objectArr, objectArr.length, Double[].class);
+	 							
+	 							isTrue = checkValue(field, Math.min(fRangeArrDouble[0], fRangeArrDouble[1]), Math.max(fRangeArrDouble[0], fRangeArrDouble[1]) );
+	 							if(!isTrue) return false;
+	 							break;
+	 						
+	 						case "$gt":
+	 							generic_object = fInfo.get(filter);
+	 							if( generic_object instanceof Long )
+	 							{
+	 								fValue = ((Long)generic_object).doubleValue();
+	 							}else {
+	 								fValue = (Double)generic_object;
+	 							}
+	 							isTrue = this.greaterValue(field, fValue);
+	 							if(!isTrue) return false;
+	 							break;
+	 							
+	 						case "$gte":
+	 							generic_object = fInfo.get(filter);
+	 							if( generic_object instanceof Long )
+	 							{
+	 								fValue = ((Long)generic_object).doubleValue();
+	 							}else {
+	 								fValue = (Double)generic_object;
+	 							}
+	 							
+	 							isTrue = this.greaterValue(field, fValue);
+	 							isTrue = isTrue || this.equalValue(field, fValue);
+	 							if(!isTrue) return false;
+	 							break;
+	 							
+	 						case "$lt":
+	 							generic_object = fInfo.get(filter);
+	 							if( generic_object instanceof Long )
+	 							{
+	 								fValue = ((Long)generic_object).doubleValue();
+	 							}else {
+	 								fValue = (Double)generic_object;
+	 							}
+	 							isTrue = this.lowerValue(field, fValue);
+	 							if(!isTrue) return false;
+	 							break;
+	 							
+	 						case "$lte":
+	 							generic_object = fInfo.get(filter);
+	 							if( generic_object instanceof Long )
+	 							{
+	 								fValue = ((Long)generic_object).doubleValue();
+	 							}else {
+	 								fValue = (Double)generic_object;
+	 							}
+	 							isTrue = this.lowerValue(field, fValue);
+	 							isTrue = isTrue || this.equalValue(field, fValue);
+	 							if(!isTrue) return false;
+	 							break;
+	                      }
+						} catch (Exception e) {
+							throw new InvalidFilterException("Valore del filtro non valido.");
+						}
+					}
+				}else {
+					// AND E OR
+					switch (field)
+					{
+						case "$and":
+							fArr = (JSONArray)fInfo.get(field);
+							fObjectArr = (JSONObject[]) fArr.toArray();
+							
+							isTrue = true;
+							for(JSONObject obj : fObjectArr)
 							{
-								isTrue = isTrue && this.equalValue((String)field, obj.get(t));
+								Object[] keys = obj.keySet().toArray();
+								for( Object t : keys )
+								{
+									isTrue = isTrue && this.equalValue((String)t, obj.get(t));
+									if(!isTrue) break;
+								}
 								if(!isTrue) break;
 							}
-						}
-						
-						if(!isTrue) return false;
-						
-						break;
-						
-					case "$or":
-						fArr = (JSONArray)fInfo.get(fType);
-						fObjectArr = (JSONObject[]) fArr.toArray();
-						
-						isTrue = false;
-						for(JSONObject js : fObjectArr)
-						{
-							Object[] keys = js.keySet().toArray();
-							for( Object k : keys )
+							
+							if(!isTrue) return false;
+							
+							break;
+							
+						case "$or":
+							fArr = (JSONArray)fInfo.get(field);
+							fObjectArr = (JSONObject[]) fArr.toArray();
+							
+							isTrue = false;
+							for(JSONObject js : fObjectArr)
 							{
-								isTrue = isTrue || this.equalValue((String)field, js.get(k));
-								if(isTrue) break;
-							}							
-						}
-						
-						if(!isTrue) return false;
-						
-						break;       
-					
-					case "$not":
-						fString = (String)fInfo.get(fType);
-						
-						isTrue = !( this.equalValue((String)filter, fString ) );
-
-						if(!isTrue) return false;
-						
-						break;
-						
-					case "$nin":
-						fRange = (JSONArray)fInfo.get(fType);
-						objectArr = fRange.toArray();
-						fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
-						
-						isTrue = !( this.containmentValue( (String)field, fRangeArrStr ) );
-						
-						if(!isTrue) return false;
-						
-						break;
-						
-					case "$in":
-						fRange = (JSONArray)fInfo.get(fType);
-						objectArr = fRange.toArray();
-						fRangeArrStr = Arrays.copyOf(objectArr, objectArr.length, String[].class);
-
-						isTrue = this.containmentValue( (String)field, fRangeArrStr );
-						
-						if(!isTrue) return false;
-						
-						break;
-						
-						 //Conditional operators 
-					case "$bt":
-						fRange = (JSONArray)fInfo.get(fType);
-						
-						objectArr = fRange.toArray();
-						fRangeArrDouble = Arrays.copyOf(objectArr, objectArr.length, Double[].class);
-						
-						isTrue = checkValue(field, Math.min(fRangeArrDouble[0], fRangeArrDouble[1]), Math.max(fRangeArrDouble[0], fRangeArrDouble[1]) );
-						if(!isTrue) return false;
-						break;
-					
-					case "$gt":
-						generic_object = fInfo.get(fType);
-						if( generic_object instanceof Long )
-						{
-							fValue = ((Long)generic_object).doubleValue();
-						}else {
-							fValue = (Double)generic_object;
-						}
-						isTrue = this.greaterValue(field, fValue);
-						if(!isTrue) return false;
-						break;
-						
-					case "$gte":
-						generic_object = fInfo.get(fType);
-						if( generic_object instanceof Long )
-						{
-							fValue = ((Long)generic_object).doubleValue();
-						}else {
-							fValue = (Double)generic_object;
-						}
-						
-						isTrue = this.greaterValue(field, fValue);
-						if(!isTrue) return false;
-						isTrue = isTrue || this.greaterValue(field, fValue);
-						if(!isTrue) return false;
-						break;
-						
-					case "$lt":
-						generic_object = fInfo.get(fType);
-						if( generic_object instanceof Long )
-						{
-							fValue = ((Long)generic_object).doubleValue();
-						}else {
-							fValue = (Double)generic_object;
-						}
-						isTrue = this.lowerValue(field, fValue);
-						if(!isTrue) return false;
-						break;
-						
-					case "$lte":
-						generic_object = fInfo.get(fType);
-						if( generic_object instanceof Long )
-						{
-							fValue = ((Long)generic_object).doubleValue();
-						}else {
-							fValue = (Double)generic_object;
-						}
-						isTrue = this.lowerValue(field, fValue);
-						if(!isTrue) return false;
-						isTrue = isTrue || this.equalValue(field, fValue);
-						if(!isTrue) return false;
-						break;
-						
+								Object[] keys = js.keySet().toArray();
+								for( Object k : keys )
+								{
+									isTrue = isTrue || this.equalValue((String)field, js.get(k));
+									if(isTrue) break;
+								}							
+							}
+							
+							if(!isTrue) return false;
+							
+							break;    
+							
+							
 					}
-			
-
-}
+					
+					
+				}
 				
 			}
 			return true;
 		}
 		
 
-	
-private boolean containmentValue(String field, Object fValue) {
+		
+		private boolean containmentValue(String field, Object fValue) {
 			
 			List<String> rightFields = Utils.getRightFields();
 			
@@ -296,13 +336,7 @@ private boolean containmentValue(String field, Object fValue) {
 
 		private boolean lowerValue(String field, Object fValue) {
 			
-			int annoMinimo = Data.getAnnoMinimo();
-			int annoMassimo = Data.getAnnoMassimo();
-			List<String> rightFields = new ArrayList<String>();
-			
-			for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
-				rightFields.add( String.valueOf(y) );	
-			
+			List<String> rightFields = Utils.getRightFields();
 			
 			if( !rightFields.contains(field) ) return false;
 			
@@ -332,13 +366,7 @@ private boolean containmentValue(String field, Object fValue) {
 
 		private boolean greaterValue(String field, Object fValue) {
 			
-			int annoMinimo = Data.getAnnoMinimo();
-			int annoMassimo = Data.getAnnoMassimo();
-			List<String> rightFields = new ArrayList<String>();
-			
-			for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
-				rightFields.add( String.valueOf(y) );	
-			
+			List<String> rightFields = Utils.getRightFields();
 			
 			if( !rightFields.contains(field) ) return false;
 			
@@ -367,29 +395,13 @@ private boolean containmentValue(String field, Object fValue) {
 
 		private boolean checkValue(String field, Object min, Object max) {
 			
-			return this.lowerValue(field, max) && this.greaterValue(field, min)	&& this.equalValue(field, max) && this.equalValue(field, min);
+			return ( this.lowerValue(field, max) && this.greaterValue(field, min) )	|| this.equalValue(field, max) || this.equalValue(field, min);
 		}
 
 
 		private boolean equalValue(String field, Object fValue) {
 			
-			int annoMinimo = Data.getAnnoMinimo();
-			int annoMassimo = Data.getAnnoMassimo();
-			List<String> rightFields = new ArrayList<String>();
-			
-			rightFields.add("indic_bt");
-			
-			rightFields.add("nace_r2");
-			
-			rightFields.add("s_adj");
-			
-			rightFields.add("unit");
-			
-			rightFields.add("country");
-			
-			for(int y = annoMinimo; y < annoMassimo + 1 ; y++)
-				rightFields.add( String.valueOf(y) );	
-			
+			List<String> rightFields = Utils.getRightFields();
 			
 			if( !rightFields.contains(field) ) return false;
 			
