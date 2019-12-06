@@ -252,13 +252,15 @@ public class Entity {
 						}
 					}
 				}else {
-					// AND E OR
+					
+					try {
+						
+						fArr = (JSONArray)fInfo.get(field);
+						fObjectArr = (JSONObject[]) fArr.toArray();
+						
 					switch (field)
 					{
 						case "$and":
-							fArr = (JSONArray)fInfo.get(field);
-							fObjectArr = (JSONObject[]) fArr.toArray();
-							
 							isTrue = true;
 							for(JSONObject obj : fObjectArr)
 							{
@@ -276,9 +278,6 @@ public class Entity {
 							break;
 							
 						case "$or":
-							fArr = (JSONArray)fInfo.get(field);
-							fObjectArr = (JSONObject[]) fArr.toArray();
-							
 							isTrue = false;
 							for(JSONObject js : fObjectArr)
 							{
@@ -296,7 +295,9 @@ public class Entity {
 							
 							
 					}
-					
+					} catch (Exception e) {
+						throw new InvalidFilterException("Valore del filtro non valido.");
+					}
 					
 				}
 				

@@ -21,21 +21,38 @@ import univpm.op.project.entity.Entity;
 import univpm.op.project.exception.InvalidFilterException;
 import univpm.op.project.utils.Utils;
 
+/**
+ * Classe che gestisce le routes dell'applicazione
+ * @author Giulio Mezzotero e Giovanni Alessandro Clini
+ *
+ */
 @RestController
 public class Controller {
 
+	/**
+	 * Metodo che restituisce il numero di Entità del dataset
+	 * @return Numero entità dataset
+	 */
 	@RequestMapping("/")
 	public String index()
     {
     	return "Dataset size: " + Data.getData().size() + " entity.";
     }
 
+	/**
+	 * Metodo che restituisce l'intero dataset in formato JSON
+	 * @return Dati in formato JSON 
+	 */
     @RequestMapping(value="/full", produces="application/json")
     public JSONObject getWholeData()
     {
     	return Data.getJSONData();
     }
-
+    
+	/**
+	 * Metodo che restituisce i metadati in formato JSON
+	 * @return Metadati in formato JSON
+	 */
     @RequestMapping(value="/getMetadata", produces="application/json")
     public String getMetadata()  
     {
@@ -56,6 +73,10 @@ public class Controller {
 		}		
     }
 
+    /**
+     * Metodo che restituisce le operazioni di analisi
+     * @return Dati analizzati in formato JSON
+     */
     @RequestMapping(value="/getAnalytics", produces="application/json")
     public JSONObject getAnalytics()
 	{

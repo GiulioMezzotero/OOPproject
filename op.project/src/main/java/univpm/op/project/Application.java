@@ -23,7 +23,7 @@ import univpm.op.project.utils.Utils;
 public class Application {
 
 	/**
-	 * Metodo di avvio 
+	 * Metodo che scarica il dataset e avvia il programma 
 	 * @param args argomenti
 	 */
 	public static void main(String[] args)  {
