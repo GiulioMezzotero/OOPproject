@@ -1,5 +1,6 @@
 package univpm.op.project.entity;
 
+
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -14,6 +15,11 @@ import univpm.op.project.data.Data;
 import univpm.op.project.exception.InvalidFilterException;
 import univpm.op.project.utils.Utils;
 
+/**
+ * Classe che contiene le informazioni sull'entità
+ * @author Giulio Mezzotero e Giovanni Alessandro Clini
+ *
+ */
 public class Entity {
 
 		public String indic_bt;
@@ -23,71 +29,114 @@ public class Entity {
 		public String country; 
 		public Map<Integer, Double> indexes;
 
+		/**
+		 * Costruttore della Classe
+		 */
 		public Entity() {
 			indexes = new HashMap<Integer, Double>();
 		}
 
-
+		/**
+		 * Metodo che restituisce l'HashMap 
+		 * @return HashMap
+		 */
 		public Map<Integer, Double> getIndexes() {
 			return indexes;
 		}
-
-
+		
+		/**
+		 * Metodo che setta gli indici 
+		 * @param indexes Indici contenuti nell'HashMap
+		 */
 		public void setIndexes(Map<Integer, Double> indexes) {
 			this.indexes = indexes;
 		}
 
-
+		/**
+		 * Metodo che restituisce indic_bt
+		 * @return indic_bt
+		 */
 		public String getIndic() {
 			return indic_bt;
 		}
 
-
+		/**
+		 * Metodo che setta indic_bt
+		 * @param indic_bt 
+		 */
 		public void setIndic(String indic_bt) {
 			this.indic_bt = indic_bt;
 		}
 
-
+		/**
+		 * Metodo che restituisce nace_r2
+		 * @return nace_r2
+		 */
 		public String getNace() {
 			return nace_r2;
 		}
 
-
+		/**
+		 * Metodo che setta nace_r2
+		 * @param nace_r2
+		 */
 		public void setNace(String nace_r2) {
 			this.nace_r2 = nace_r2;
 		}
 
-
+		/**
+		 * Metodo che restituisce s_adj
+		 */
 		public String getAdj() {
 			return s_adj;
 		}
 
-
+		/**
+		 * Metodo che setta s_adj
+		 * @param s_adj
+		 */
 		public void setAdj(String s_adj) {
 			this.s_adj = s_adj;
 		}
 
-
+		/**
+		 * Metodo che restituisce unit
+		 * @return unit
+		 */
 		public String getUnit() {
 			return unit;
 		}
 
-
+		/**
+		 * Metodo che setta unit
+		 * @param unit
+		 */
 		public void setUnit(String unit) {
 			this.unit = unit;
 		}
 
-
+		/**
+		 * Metodo che restituisce country
+		 * @return country
+		 */
 		public String getCountry() {
 			return country;
 		}
 
-
+		/**
+		 * Metodo che setta country
+		 * @param country
+		 */
 		public void setCountry(String country) {
 			this.country = country;
 		}
 		
-		
+		/**
+		 * Metodo che applica i filtri all'oggetto JSON 
+		 * @param jsonFilters filtri in formato JSON
+		 * @return true se il filtro è applicato correttamente all'oggetto, false altrimenti
+		 * @throws InvalidFilterException 
+		 */
 		public boolean filterApplication(JSONObject jsonFilters) throws InvalidFilterException
 		{
 			
@@ -303,7 +352,13 @@ public class Entity {
 		}
 		
 
-		
+		/**
+		 * Metodo che verifica se la variabile passata come argomento si trova all'interno dell'array
+		 * passato anch'esso come parametro. 
+		 * @param field Variabile passata (nome dato in automatico dal compilatore) su cui eseguire la verifica
+		 * @param fValue Valore con il quale effettuare la verifica
+		 * @return true se la verifica si conclude con un successo
+		 */
 		private boolean containmentValue(String field, Object fValue) {
 			
 			List<String> rightFields = Utils.getRightFields();
@@ -331,7 +386,13 @@ public class Entity {
 			return false;
 		}
 
-
+		/**
+		 * Metodo che verifica se la variabile passata come argomento ha un  valore minore del valore passato
+		 * come argomento.
+		 * @param field Variabile passata (nome dato in automatico dal compilatore) su cui eseguire la verifica
+		 * @param fValue Valore con il quale effettuare la verifica
+		 * @return true se la verifica si conclude con un successo
+		 */
 		private boolean lowerValue(String field, Object fValue) {
 			
 			List<String> rightFields = Utils.getRightFields();
@@ -361,7 +422,13 @@ public class Entity {
 		}
 
 
-
+		/**
+		 * Metodo che verifica se la variabile passata come argomento ha un  valore maggiore del valore passato
+		 * come argomento.
+		 * @param field Variabile passata (nome dato in automatico dal compilatore) su cui eseguire la verifica
+		 * @param fValue Valore con il quale effettuare la verifica
+		 * @return true se la verifica si conclude con un successo
+		 */
 		private boolean greaterValue(String field, Object fValue) {
 			
 			List<String> rightFields = Utils.getRightFields();
@@ -390,13 +457,26 @@ public class Entity {
 			return false;
 		}
 
-
+		/**
+		 * Metodo che verifica se la variabile passata come argomento ha un  valore compreso tra i valori passati 
+		 * come parametri. 
+		 * @param field Variabile passata (nome dato in automatico dal compilatore) su cui eseguire la verifica
+		 * @param min Valore minore
+		 * @param max Valore maggiore
+		 * @return true se la verifica si conclude con un successo
+		 */
 		private boolean checkValue(String field, Object min, Object max) {
 			
 			return ( this.lowerValue(field, max) && this.greaterValue(field, min) )	|| this.equalValue(field, max) || this.equalValue(field, min);
 		}
 
-
+		/**
+		 * Metodo che verifica se la variabile passata come argomento ha un  valore uguale al valore passato
+		 * come argomento.
+		 * @param field Variabile passata (nome dato in automatico dal compilatore) su cui eseguire la verifica
+		 * @param fValue Valore con il quale effettuare la verifica
+		 * @return true se la verifica si conclude con un successo
+		 */
 		private boolean equalValue(String field, Object fValue) {
 			
 			List<String> rightFields = Utils.getRightFields();
