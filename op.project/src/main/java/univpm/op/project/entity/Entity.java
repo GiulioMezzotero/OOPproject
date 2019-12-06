@@ -135,7 +135,7 @@ public class Entity {
 		 * Metodo che applica i filtri all'oggetto JSON 
 		 * @param jsonFilters filtri in formato JSON
 		 * @return true se il filtro è applicato correttamente all'oggetto, false altrimenti
-		 * @throws InvalidFilterException 
+		 * @throws InvalidFilterException Genera un errore per i filtri invalidi
 		 */
 		public boolean filterApplication(JSONObject jsonFilters) throws InvalidFilterException
 		{
