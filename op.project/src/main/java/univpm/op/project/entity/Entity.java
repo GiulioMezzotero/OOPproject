@@ -250,51 +250,51 @@ public class Entity {
 						throw new InvalidFilterException("Valore del filtro non valido.");
 					}
 			}else {
-					// AND E OR
-					switch (field)
-					{
-						case "$and":
-							fArr = (JSONArray)fInfo.get(field);
-							fObjectArr = (JSONObject[]) fArr.toArray();
-							
-							isTrue = true;
-							for(JSONObject obj : fObjectArr)
-							{
-								Object[] keys = obj.keySet().toArray();
-								for( Object t : keys )
+					try {
+	
+						fArr = (JSONArray)fInfo.get(field);
+						fObjectArr = (JSONObject[]) fArr.toArray();
+						
+						switch (field)
+						{
+							case "$and":
+								isTrue = true;
+								for(JSONObject obj : fObjectArr)
 								{
-									isTrue = isTrue && this.equalValue((String)t, obj.get(t));
+									Object[] keys = obj.keySet().toArray();
+									for( Object t : keys )
+									{
+										isTrue = isTrue && this.equalValue((String)t, obj.get(t));
+										if(!isTrue) break;
+									}
 									if(!isTrue) break;
 								}
-								if(!isTrue) break;
-							}
-							
-							if(!isTrue) return false;
-							
-							break;
-							
-						case "$or":
-							fArr = (JSONArray)fInfo.get(field);
-							fObjectArr = (JSONObject[]) fArr.toArray();
-							
-							isTrue = false;
-							for(JSONObject js : fObjectArr)
-							{
-								Object[] keys = js.keySet().toArray();
-								for( Object k : keys )
+								
+								if(!isTrue) return false;
+								
+								break;
+								
+							case "$or":
+								isTrue = false;
+								for(JSONObject js : fObjectArr)
 								{
-									isTrue = isTrue || this.equalValue((String)field, js.get(k));
-									if(isTrue) break;
-								}							
-							}
-							
-							if(!isTrue) return false;
-							
-							break;    
-							
-							
+									Object[] keys = js.keySet().toArray();
+									for( Object k : keys )
+									{
+										isTrue = isTrue || this.equalValue((String)field, js.get(k));
+										if(isTrue) break;
+									}							
+								}
+								
+								if(!isTrue) return false;
+								
+								break;    
+								
+								
+						}
+					} catch (Exception e) {
+						throw new InvalidFilterException("Valore del filtro non valido.");
 					}
-					
 					
 				}
 				
