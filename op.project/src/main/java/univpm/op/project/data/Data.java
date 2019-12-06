@@ -17,66 +17,83 @@ import univpm.op.project.entity.Entity;
 import univpm.op.project.utils.Utils;
 import univpm.op.project.utils.NumericAnalysis;
 
-public class Data {
+	/**
+	 * Classe per la gestione dei dati in formato TSV
+	 * @author Giulio Mezzotero e Giovanni Alessandro Clini
+	 *
+	 */
+	public class Data {
+		
+		public static List<Entity> data = new ArrayList<Entity>();
 	
-	public static List<Entity> data = new ArrayList<Entity>();
-
-	public static void addEntity(Entity e) {
-		data.add(e);
-	}
-
-
-@SuppressWarnings("unchecked")
-public static JSONObject getJSONData() {
-	
-		JSONObject dataJSONObj = new JSONObject();
-		JSONArray dataJSONArr = new JSONArray();
-
-		for (Entity e : Data.getData())  //for each: riempio gli oggetti e inserisco nell'array
-		{
-			JSONObject entityObject = new JSONObject();
-
-			entityObject.put("indic_bt", e.getIndic() );
-			entityObject.put("nace_r2", e.getNace() );
-			entityObject.put("s_adj", e.getAdj() );
-			entityObject.put("unit", e.getUnit() );
-			entityObject.put("country", e.getCountry() );
-
-
-			JSONObject dataObj = new JSONObject();  //indici: lista degli NData
-			
-			Map<Integer, Double> indexes = e.getIndexes();
-			
-			for(Integer key : indexes.keySet())
-			{
-				dataObj.put(key, indexes.get(key));	
-			}
-			
-			
-
-			entityObject.put("Data", dataObj );
-
-			dataJSONArr.add(entityObject);	
+		/**
+		 * Metodo per poter aggiungere i dati di una nuova entità alla lista
+		 * @param e Dati della nuova entità da aggiungere
+		 */
+		public static void addEntity(Entity e) {
+			data.add(e);
 		}
-
-
-		dataJSONObj.put("EntityData", dataJSONArr);
-		dataJSONObj.put("Count", Data.getData().size() );
-		dataJSONObj.put("Success", true);
-
-		return dataJSONObj;
-	}
+	
+	/**
+	 * Metodo per la restituzione dei dati delle entità in JSON
+	 * @return Dati delle entità in JSON
+	 */
+	@SuppressWarnings("unchecked")
+	public static JSONObject getJSONData() {
+		
+			JSONObject dataJSONObj = new JSONObject();
+			JSONArray dataJSONArr = new JSONArray();
+	
+			for (Entity e : Data.getData())  //for each: riempio gli oggetti e inserisco nell'array
+			{
+				JSONObject entityObject = new JSONObject();
+	
+				entityObject.put("indic_bt", e.getIndic() );
+				entityObject.put("nace_r2", e.getNace() );
+				entityObject.put("s_adj", e.getAdj() );
+				entityObject.put("unit", e.getUnit() );
+				entityObject.put("country", e.getCountry() );
 	
 	
+				JSONObject dataObj = new JSONObject();  //indici: lista degli NData
+				
+				Map<Integer, Double> indexes = e.getIndexes();
+				
+				for(Integer key : indexes.keySet())
+				{
+					dataObj.put(key, indexes.get(key));	
+				}
+				
+				
+	
+				entityObject.put("Data", dataObj );
+	
+				dataJSONArr.add(entityObject);	
+			}
 	
 	
+			dataJSONObj.put("EntityData", dataJSONArr);
+			dataJSONObj.put("Count", Data.getData().size() );
+			dataJSONObj.put("Success", true);
+	
+			return dataJSONObj;
+		}
+	
+	
+	/**
+	 * Metodo che restituisce la lista delle entità inserite 
+	 * @return Lista delle entità inserite
+	 */
 	public static List<Entity> getData() {
 		
 		return data;
 	}
 
 	
-
+/**
+ * Metodo che carica in memoria e parsa i dati dal file TSV scaricato
+ * @param file File da parsare
+ */
 	public static void dataParsing( String file )
 	{
 		
@@ -131,22 +148,33 @@ public static JSONObject getJSONData() {
 			i.printStackTrace();			
 		}
 		System.out.println("PARSING EFFETTUATO");
-		// FINE PARSING
 
 	}
 
-	
+	/**
+	 * Metodo che restituisce l'anno più piccolo dai metadati 
+	 * @return La costante int 1992
+	 */
 	public static int getAnnoMinimo()
 	{
 		return 1992;
 	}
 	
+	/**
+	 * Metodo che restituisce l'anno più grande dai metadati 
+	 * @return La costante int 2018
+	 */
 	public static int getAnnoMassimo()
 	{
 		return 2018;
 	}
 	
-	
+	/**
+	 * Metodo che analizza la lista di entità passata come parametro 
+	 * restituendone un'analisi statistica
+	 * @param data Lista da analizzare
+	 * @return JSONObject contenente l'analisi
+	 */
 	@SuppressWarnings("unchecked")
 	public static JSONObject DataAnalytic( List<Entity> data )
 	{
