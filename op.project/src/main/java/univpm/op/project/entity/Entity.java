@@ -62,7 +62,7 @@ public class Entity {
 
 		/**
 		 * Metodo che setta indic_bt
-		 * @param indic_bt 
+		 * @param indic_bt indic_bt che si intende impostare
 		 */
 		public void setIndic(String indic_bt) {
 			this.indic_bt = indic_bt;
@@ -78,7 +78,7 @@ public class Entity {
 
 		/**
 		 * Metodo che setta nace_r2
-		 * @param nace_r2
+		 * @param nace_r2 nace_r2 che si intende impostare
 		 */
 		public void setNace(String nace_r2) {
 			this.nace_r2 = nace_r2;
@@ -86,6 +86,7 @@ public class Entity {
 
 		/**
 		 * Metodo che restituisce s_adj
+		 * @return s_adj
 		 */
 		public String getAdj() {
 			return s_adj;
@@ -93,7 +94,7 @@ public class Entity {
 
 		/**
 		 * Metodo che setta s_adj
-		 * @param s_adj
+		 * @param s_adj s_adj che si intende impostare
 		 */
 		public void setAdj(String s_adj) {
 			this.s_adj = s_adj;
@@ -109,7 +110,7 @@ public class Entity {
 
 		/**
 		 * Metodo che setta unit
-		 * @param unit
+		 * @param unit unit che si intende impostare
 		 */
 		public void setUnit(String unit) {
 			this.unit = unit;
@@ -125,7 +126,7 @@ public class Entity {
 
 		/**
 		 * Metodo che setta country
-		 * @param country
+		 * @param country country che si intende impostare
 		 */
 		public void setCountry(String country) {
 			this.country = country;

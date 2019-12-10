@@ -1,7 +1,7 @@
 package univpm.op.project.exception;
 
 /**
- * Classe che gestisce le eccezione per filtri 
+ * Classe che gestisce le eccezioni per filtri 
  * @author Giulio Mezzotero e Giovanni Alessandro Clini
  *
  */
