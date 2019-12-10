@@ -28,6 +28,8 @@ Il progetto presenta un package principale  `univpm.op.project` che contiene la 
 -   `exception`: contiene la classe `InvalidFilterException` che gestisce le eccezioni per i filtri;
 -   `utils`: contiene le classi `Utils` e `NumericAnalysis`. La prima, astratta, contiene i metodi utili allo sviluppo dell'applicazione, la seconda estrae le analisi dai dati.
 
+Visionare il JavaDoc per informazioni più specifiche su classi e relativi metodi.
+
 ## Routes dell'applicazione
 Gli endpoint specificati nell'applicazione per effettuare le varie richieste sono i seguenti:
 
@@ -39,3 +41,34 @@ Gli endpoint specificati nell'applicazione per effettuare le varie richieste son
 | **GET** | **/getAnalytics** | Route che restituisce le analisi sui dati JSON. |
 | **POST** | **/getAnalytics/filtered** | Route che mostra i dati recuperati dal TSV, eventulmente filtrati, in formato JSON. <br/> In particolare: <br/> **1. Corpo della richiesta non presente:** in questo caso verranno restituiti tutti i dati appartenenti al dataset, senza applicare alcun filtro. <br/> **2. Corpo della richiesta contenente il filtro:** in questo caso il dato verrà filtrato secondo secondo i filtri specificati. |
 
+## Filtri
+Il filtro va inserito nel body della richiesta POST. I filtri che possono essere applicati sono i seguenti: 
+ 
+| Tipo operatore | Operatore | Descrizione | Esempio di applicazione |
+| - | - | - | - |
+| **Logico** | **$not** | Indica se il valore associato al campo è diverso da quello indicato nel filtro. | `{ "indic_bt": { "$not": "PNUM" } }` |
+| **Logico** | **$in** | Specificato un insieme di valori, indica se il valore associato al campo è uno di questi valori. | `{ "indic_bt": { "$in": [ "PNUM", "PSQM" ] } }` |
+| **Logico** | **$nin** | Specificato un insieme di valori, indica se il valore associato al campo non è nessuno di questi valori. | `{ "indic_bt": { "$nin": [ "PNUM", "PSQM" ] } }`  |
+| **Logico** | **$or** | Specificato un insieme di filtri il dato è accettato se almeno uno dei filtri è soddisfatto. | `{ "$or": [ { "indic_bt": "PNUM" }, {"s_adj": "NSA" } ]` |
+| **Logico** | **$and** | Specificato un insieme di filtri il dato è accettato se tutti i filtri sono soddisfatti. | `{ "$and": [ { "indic_bt": "PSQM" }, {"s_adj": "SA" } ]` |
+| **Condizionale** | **$gt** | Indica se il valore associato al filtro è più grande rispetto a quello indicato nel campo. | `{ "2012": { "$gt": 110 } }` |
+| **Condizionale** | **$gte** | Indica se il valore associato al filtro è uguale o più grande rispetto a quello indicato nel campo. | `{ "1998": { "$gte": 52 } }` |
+| **Condizionale** | **$lt** | Indica se il valore associato al filtro è più piccolo rispetto a quello indicato nel campo. | `{ "2016": { "$lt": 94 } }` |
+| **Condizionale** | **$lte** | Indica se il valore associato al filtro è uguale o più piccolo rispetto a quello indicato nel campo. | `{ "1997": { "$lte": 120 } }` |
+| **Condizionale** | **$bt** | Specificati due valori numerici, indica se il valore associato al campo è compreso tra questi due valori. | `{ "2018": { "$bt": [ 10, 60 ] } }` |
+
+
+## Metodi di analisi implementati
+I metodi di analisi implementati sono i seguenti:
+
+####  Numerici
+ - MEDIA;
+ - MINIMO;
+ - MASSIMO;
+ - DEVIAZIONE STANDARD;
+ - SOMMA;
+ - CONTEGGIO.
+ 
+ #### Su stringhe
+ - CONTEGGIO ELEMENTI UNICI.
+ 
