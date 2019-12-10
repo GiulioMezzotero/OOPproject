@@ -9,6 +9,7 @@ L'applicazione, una volta lanciata, esegue il download di un dataset in formato 
 
 ## Interpretazione modello e dati
 I dati sono tratti dal sito dell'Unione Europea. Il dataset TSV contiene:
+
 | Campo | Descrizione |
 | - | - |
 | **indic_bt** | Indicatore del Business Trend. |
@@ -27,5 +28,14 @@ Il progetto presenta un package principale  `univpm.op.project` che contiene la 
 -   `exception`: contiene la classe `InvalidFilterException` che gestisce le eccezioni per i filtri;
 -   `utils`: contiene le classi `Utils` e `NumericAnalysis`. La prima, astratta, contiene i metodi utili allo sviluppo dell'applicazione, la seconda estrae le analisi dai dati.
 
-Visionare il JavaDoc per informazioni più specifiche su classi e relativi metodi.
+## Routes dell'applicazione
+Gli endpoint specificati nell'applicazione per effettuare le varie richieste sono i seguenti:
+
+| Metodo | Endpoint | Descrizione |
+| - | - | - |
+| **GET** | **/** | Route che restituisce il numero di Entità del dataset. |
+| **GET** | **/full** | Route che restituisce i dati del dataset in formato JSON. |
+| **GET** | **/getMetadata** | Route che restituisce i metadati in formato JSON. |
+| **GET** | **/getAnalytics** | Route che restituisce le analisi sui dati JSON. |
+| **POST** | **/getAnalytics/filtered** | Route che mostra i dati recuperati dal TSV, eventulmente filtrati, in formato JSON. <br/> In particolare: <br/> **1. Corpo della richiesta non presente:** in questo caso verranno restituiti tutti i dati appartenenti al dataset, senza applicare alcun filtro. <br/> **2. Corpo della richiesta contenente il filtro:** in questo caso il dato verrà filtrato secondo secondo i filtri specificati. |
 
