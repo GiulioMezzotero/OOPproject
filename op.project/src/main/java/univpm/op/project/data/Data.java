@@ -115,7 +115,12 @@ import univpm.op.project.utils.NumericAnalysis;
 
             	entityData = lineData.split("[,\\t]");
             	
-            	if(entityData.length != headingData.length) continue;
+            	if(entityData.length != headingData.length)
+            	{
+            		System.out.println("Errore: la seguente riga non contiene il giusto numero di attributi.");
+            		System.out.println(lineData);
+            		continue;
+            	}
 
             	e.setIndic( entityData[0].trim() );
             	e.setNace( entityData[1].trim() );
