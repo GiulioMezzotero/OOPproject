@@ -26,7 +26,7 @@ I dati sono tratti dal sito dell'Unione Europea. Il dataset TSV contiene:
 -----
 
 ## Packages e classi
-Il progetto presenta un package principale  `univpm.op.project` che contiene la classe main `Application` che avvia il server Spring. Le altre classi sono divise in 5 package:
+Il progetto presenta un package principale  `univpm.op.project` che contiene la classe main `Application` che avvia il server Spring. Le altre classi sono divise in 5 packages:
 
 -   `data`: contiene le classi  `Data` e `StringName`. La prima gestisce i dati in formato TSV, la seconda è astratta e contiene le stringhe con l'indirizzo dei dati e i nomi dei due file necessari allo sviluppo del progetto;
 -   `entity`: contiene la classe  `Entity`, che struttura il nuovo tipo di dati necessario per l'immagazzinamento delle informazioni derivanti dal dataset;
@@ -54,11 +54,11 @@ Gli endpoint specificati nell'applicazione per effettuare le varie richieste son
 ## Filtri
 Il filtro va inserito nel body della richiesta POST. I filtri che possono essere applicati sono i seguenti: 
  
-| Tipo operatore | Operatore | Descrizione | Esempio di applicazione |
+| Tipo | Operatore | Descrizione | Esempio di applicazione |
 | - | - | - | - |
 | **Logico** | **$not** | Indica se il valore associato al campo è diverso da quello indicato nel filtro. | `{ "indic_bt": { "$not": "PNUM" } }` |
 | **Logico** | **$in** | Specificato un insieme di valori, indica se il valore associato al campo è uno di questi valori. | `{ "indic_bt": { "$in": [ "PNUM", "PSQM" ] } }` |
-| **Logico** | **$nin** | Specificato un insieme di valori, indica se il valore associato al campo non è nessuno di questi valori. | `{ "indic_bt": { "$nin": [ "PNUM", "PSQM" ] } }`  |
+| **Logico** | **$nin** | Specificato un insieme di valori, indica se il valore associato al campo non è nessuno di questi valori. | `{ "indic_bt": { "$nin": [ "CIAO", "F_CC111_X_CC113" ] } }` |
 | **Logico** | **$or** | Specificato un insieme di filtri il dato è accettato se almeno uno dei filtri è soddisfatto. | `{ "$or": [ { "indic_bt": "PNUM" }, {"s_adj": "NSA" } ]` |
 | **Logico** | **$and** | Specificato un insieme di filtri il dato è accettato se tutti i filtri sono soddisfatti. | `{ "$and": [ { "indic_bt": "PSQM" }, {"s_adj": "SA" } ]` |
 | **Condizionale** | **$gt** | Indica se il valore associato al filtro è più grande rispetto a quello indicato nel campo. | `{ "2012": { "$gt": 110 } }` |
@@ -72,8 +72,16 @@ Il filtro va inserito nel body della richiesta POST. I filtri che possono essere
 ## Esempi di richieste GET/POST
 Tramite Advanced REST Client
 
+[localhost:8080/](https://github.com/GiulioMezzotero/OOPproject/blob/master/ImmagineVuoto.PNG)
+
 [localhost:8080/full](https://github.com/GiulioMezzotero/OOPproject/blob/master/ImmagineFull.png)
+
+[localhost:8080/getMetadata](https://github.com/GiulioMezzotero/OOPproject/blob/master/ImmagineMetadati.PNG)
+
+[localhost:8080/getAnalytics](https://github.com/GiulioMezzotero/OOPproject/blob/master/ImmagineAnalytics.PNG)
+
 [localhost:8080/getAnalytics/filtered](https://github.com/GiulioMezzotero/OOPproject/blob/master/ImmagineDatiFiltrati.PNG)
+
 
 -----
 
