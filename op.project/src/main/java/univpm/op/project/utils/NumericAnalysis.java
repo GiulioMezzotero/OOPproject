@@ -80,7 +80,7 @@ public class NumericAnalysis {
 	 * Metodo che restituisce la somma dei valori inseriti
 	 * @return Somma dei valori inseriti
 	 */
-		public Object getSum() {
+		public double getSum() {
 			
 			return sum;
 		
@@ -90,7 +90,7 @@ public class NumericAnalysis {
 	 * Metodo che restituisce il conteggio dei valori inseriti
 	 * @return Conteggio dei valori inseriti
 	 */
-		public Object getCount() {
+		public int getCount() {
 			
 			return count;
 		
@@ -100,7 +100,7 @@ public class NumericAnalysis {
 	 *  Metodo che restituisce la media dei valori inseriti.
 	 * @return Media dei valori inseriti
 	 */
-	public Object getAverage() {
+	public double getAverage() {
 		
 		return average;
 		
@@ -110,7 +110,7 @@ public class NumericAnalysis {
 	 * Metodo che restituisce il minimo dei valori inseriti.
 	 * @return Minimo dei valori inseriti
 	 */
-	public Object getMin() {
+	public double getMin() {
 		
 		return min;
 		
@@ -120,7 +120,7 @@ public class NumericAnalysis {
 	 * Metodo che restituisce il massimo dei valori inseriti.
 	 * @return Massimo dei valori inseriti
 	 */
-	public Object getMax() {
+	public double getMax() {
 		
 		return max;
 		
@@ -130,7 +130,7 @@ public class NumericAnalysis {
 	 * Metodo che restituisce la deviazione standard dei valori inseriti
 	 * @return Deviazione standard dei valori inseriti
 	 */
-	public Object getStdDev() {
+	public double getStdDev() {
 		
 		return stddev;
 		

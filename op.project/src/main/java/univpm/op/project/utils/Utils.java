@@ -149,7 +149,6 @@ public abstract class Utils {
 	 * @param hashmap La HashMap da cui prendere i valori per costruire l'oggetto JSON 
 	 * @return Oggetto JSON 
 	 */
-	@SuppressWarnings("unchecked")
 	public static JSONObject getJSONFromHashMap(Map<String, Integer> hashmap)
 	{
 		JSONObject json = new JSONObject();
