@@ -80,7 +80,7 @@ public class Controller {
     @RequestMapping(value="/getAnalytics", produces="application/json")
     public JSONObject getAnalytics()
 	{
-		return Data.DataAnalytic( Data.getData() );
+		return Data.dataAnalytics( Data.getData() );
 	}
 	
     /**
@@ -93,7 +93,7 @@ public class Controller {
 	{
 		if( filter == null )
 		{
-			return Data.DataAnalytic( Data.getData() );
+			return Data.dataAnalytics( Data.getData() );
 		}
 		
 		List<Entity> data = new ArrayList<Entity>();
@@ -132,7 +132,7 @@ public class Controller {
 		}
 		
 		
-		return Data.DataAnalytic( data );
+		return Data.dataAnalytics( data );
 	}
 }
    
