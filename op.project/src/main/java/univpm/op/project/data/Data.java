@@ -180,8 +180,7 @@ import univpm.op.project.utils.NumericAnalysis;
 	 * @param data Lista da analizzare
 	 * @return JSONObject contenente l'analisi
 	 */
-	@SuppressWarnings("unchecked")
-	public static JSONObject dataAnalytic( List<Entity> data )
+	public static JSONObject dataAnalytics( List<Entity> data )
 	{
 		if( data.size() == 0 )
 		{
