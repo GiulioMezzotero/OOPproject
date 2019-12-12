@@ -6,7 +6,7 @@ Il progetto presente nella repository consiste in un'applicazione Java basata su
 
 -----
 
-## Funzionamento all'avvio
+## Funzionamento e utilizzo
 L'applicazione, una volta lanciata, esegue il download di un dataset in formato TSV contenuto in un JSON fornito tramite un [URL](http://data.europa.eu/euodp/data/api/3/action/package_show?id=GeGKzwDc03b3j0olhD5DQ). Il download del dataset viene salvato nella cartella del progetto con il nome di dataset.tsv. Successivamente viene effettuato il parsing del file TSV in modo da poter creare le istanze del modello. Inoltre il programma avvia un web-server in locale sulla porta 8080 che riceve richieste dall'utente.
 
 -----
@@ -47,7 +47,7 @@ Gli endpoint specificati nell'applicazione per effettuare le varie richieste son
 | **GET** | **/full** | Route che restituisce i dati del dataset in formato JSON. |
 | **GET** | **/getMetadata** | Route che restituisce i metadati in formato JSON. |
 | **GET** | **/getAnalytics** | Route che restituisce le analisi sui dati JSON. |
-| **POST** | **/getAnalytics/filtered** | Route che mostra i dati recuperati dal TSV, eventulmente filtrati, in formato JSON. <br/> In particolare: <br/> **1. Corpo della richiesta non presente:** in questo caso verranno restituiti tutti i dati appartenenti al dataset, senza applicare alcun filtro. <br/> **2. Corpo della richiesta contenente il filtro:** in questo caso il dato verrà filtrato secondo secondo i filtri specificati. |
+| **POST** | **/getAnalytics/filtered** | Route che mostra i dati recuperati dal TSV, eventulmente filtrati, in formato JSON. <br/>  Casi: <br/> **1. Corpo della richiesta non presente:** verranno restituiti tutti i dati appartenenti al dataset, senza applicare alcun filtro. <br/> **2. Corpo della richiesta contenente il filtro:** il dato verrà filtrato secondo secondo i filtri specificati. |
 
 -----
 
@@ -57,10 +57,10 @@ Il filtro va inserito nel body della richiesta POST. I filtri che possono essere
 | Tipo | Operatore | Descrizione | Esempio di applicazione |
 | - | - | - | - |
 | **Logico** | **$not** | Indica se il valore associato al campo è diverso da quello indicato nel filtro. | `{ "indic_bt": { "$not": "PNUM" } }` |
-| **Logico** | **$in** | Specificato un insieme di valori, indica se il valore associato al campo è uno di questi valori. | `{ "indic_bt": { "$in": [ "PNUM", "PSQM" ] } }` |
-| **Logico** | **$nin** | Specificato un insieme di valori, indica se il valore associato al campo non è nessuno di questi valori. | `{ "indic_bt": { "$nin": [ "CIAO", "F_CC111_X_CC113" ] } }` |
-| **Logico** | **$or** | Specificato un insieme di filtri il dato è accettato se almeno uno dei filtri è soddisfatto. | `{ "$or": [ { "indic_bt": "PNUM" }, {"s_adj": "NSA" } ]` |
-| **Logico** | **$and** | Specificato un insieme di filtri il dato è accettato se tutti i filtri sono soddisfatti. | `{ "$and": [ { "indic_bt": "PSQM" }, {"s_adj": "SA" } ]` |
+| **Logico** | **$in** | Definito un insieme di valori, indica se il valore associato al campo è uno di questi valori. | `{ "indic_bt": { "$in": [ "PNUM", "PSQM" ] } }` |
+| **Logico** | **$nin** | Definito un insieme di valori, indica se il valore associato al campo non è nessuno di questi valori. | `{ "indic_bt": { "$nin": [ "CIAO", "F_CC111_X_CC113" ] } }` |
+| **Logico** | **$or** | Definito un insieme di filtri il dato è accettato se almeno uno dei filtri è soddisfatto. | `{ "$or": [ { "indic_bt": "PNUM" }, {"s_adj": "NSA" } ]` |
+| **Logico** | **$and** | Definito un insieme di filtri il dato è accettato se tutti i filtri sono soddisfatti. | `{ "$and": [ { "indic_bt": "PSQM" }, {"s_adj": "SA" } ]` |
 | **Condizionale** | **$gt** | Indica se il valore associato al filtro è più grande rispetto a quello indicato nel campo. | `{ "2012": { "$gt": 110 } }` |
 | **Condizionale** | **$gte** | Indica se il valore associato al filtro è uguale o più grande rispetto a quello indicato nel campo. | `{ "1998": { "$gte": 52 } }` |
 | **Condizionale** | **$lt** | Indica se il valore associato al filtro è più piccolo rispetto a quello indicato nel campo. | `{ "2016": { "$lt": 94 } }` |
@@ -101,7 +101,7 @@ I metodi di analisi implementati sono i seguenti:
  
  -----
  
- ## UML
+## UML
  
 ### Diagramma delle classi
  
@@ -129,6 +129,6 @@ I metodi di analisi implementati sono i seguenti:
 
 ![](AnalyticsSequence.jpg)
 
-#### POST /getFilteredAnalytics
+#### POST /getAnalytics/filtered
 
 ![](AnalyticsFilteredSequence.jpg)
