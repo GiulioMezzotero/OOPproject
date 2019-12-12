@@ -103,3 +103,32 @@ I metodi di analisi implementati sono i seguenti:
  
  ## UML
  
+### Diagramma delle classi
+ 
+ ![](DiagrammaClassi.jpg)
+
+### Diagramma dei casi d'uso
+
+![](UseCase.jpg)
+
+### Diagramma delle sequenze
+
+#### GET /
+
+![](IndexSequence.jpg)
+
+#### GET /full
+
+![](WholeDataSequence.jpg)
+
+#### GET /getMetadata
+
+![](MetadataSequence.jpg)
+
+#### GET /getAnalytics
+
+![](AnalyticsSequence.jpg)
+
+#### POST /getFilteredAnalytics
+
+![](AnalyticsFilteredSequence.jpg)
