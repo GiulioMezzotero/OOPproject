@@ -55,7 +55,7 @@ import univpm.op.project.utils.NumericAnalysis;
 				entityObject.put("country", e.getCountry() );
 	
 	
-				JSONObject dataObj = new JSONObject();  //indici: lista degli NData
+				JSONObject dataObj = new JSONObject();  
 				
 				Map<Integer, Double> indexes = e.getIndexes();
 				
@@ -101,7 +101,7 @@ import univpm.op.project.utils.NumericAnalysis;
 		
 		try {
 			FileReader readingData = new FileReader( file );
-			BufferedReader bufferedReader = new BufferedReader( readingData );
+			BufferedReader bufferedReader = new BufferedReader( readingData );  //buffer per portarmi avanti con la lettura dei caratteri
 
 			String[] entityData;
 			String[] headingData;
@@ -115,7 +115,7 @@ import univpm.op.project.utils.NumericAnalysis;
 
             	entityData = lineData.split("[,\\t]");
             	
-            	if(entityData.length != headingData.length)
+            	if(entityData.length != headingData.length)   //gestisco i problemi in fase di importazione
             	{
             		System.out.println("Errore: la seguente riga non contiene il giusto numero di attributi.");
             		System.out.println(lineData);

@@ -219,7 +219,7 @@ public class Entity {
 						}
 							
 						}catch(Exception e) {
-							throw new InvalidFilterException("Valore del filtro non valido.");
+							throw new InvalidFilterException("Valore del filtro non valido.");  //problemi in fase di richiesta
 						}
 					
 
