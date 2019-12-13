@@ -331,7 +331,7 @@ public class Entity {
 									Object[] keys = js.keySet().toArray();
 									for( Object k : keys )
 									{
-										isTrue = isTrue || this.equalValue((String)field, js.get(k));
+										isTrue = isTrue || this.equalValue((String)k, js.get(k));
 										if(isTrue) break;
 									}							
 								}
