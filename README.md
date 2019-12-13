@@ -17,11 +17,11 @@ I dati sono tratti dal sito dell'Unione Europea. Il dataset TSV contiene:
 | Campo | Descrizione |
 | - | - |
 | **indic_bt** | Indicatore del Business Trend. |
-| **nace_r2** | Classificazione delle attività economiche.  |
-| **s_adj** | Sigla che informa se il dato è "destagionalizzato" o meno (Seasonal Adjustment). |
+| **nace_r2** | Classificatore delle attività economiche.  |
+| **s_adj** | Sigla che indica se il dato è "destagionalizzato" o meno (Seasonal Adjustment). |
 | **unit** | Unità di misura. |
 | **geo/time (country)** | Entità geopolitica di interesse. |
-| **dati annuali** | Array di indici suddivisi per anno dal 1992 al 2018. |
+| **dati annuali** | Indici suddivisi per anno dal 1992 al 2018. |
 
 -----
 
@@ -30,7 +30,7 @@ Il progetto presenta un package principale  `univpm.op.project` che contiene la 
 
 -   `data`: contiene le classi  `Data` e `StringName`. La prima gestisce i dati in formato TSV, la seconda è astratta e contiene le stringhe con l'indirizzo dei dati e i nomi dei due file necessari allo sviluppo del progetto;
 -   `entity`: contiene la classe  `Entity`, che struttura il nuovo tipo di dati necessario per l'immagazzinamento delle informazioni derivanti dal dataset;
--   `controller`: contiene la classe  `Controller`che gestisce le routes dell'applicazione;
+-   `controller`: contiene la classe  `Controller` che gestisce le routes dell'applicazione;
 -   `exception`: contiene la classe `InvalidFilterException` che gestisce le eccezioni per i filtri;
 -   `utils`: contiene le classi `Utils` e `NumericAnalysis`. La prima, astratta, contiene i metodi utili allo sviluppo dell'applicazione, la seconda estrae le analisi dai dati.
 
@@ -47,7 +47,7 @@ Gli endpoint specificati nell'applicazione per effettuare le varie richieste son
 | **GET** | **/full** | Route che restituisce i dati del dataset in formato JSON. |
 | **GET** | **/getMetadata** | Route che restituisce i metadati in formato JSON. |
 | **GET** | **/getAnalytics** | Route che restituisce le analisi sui dati JSON. |
-| **POST** | **/getAnalytics/filtered** | Route che mostra i dati recuperati dal TSV, eventulmente filtrati, in formato JSON. <br/>  Casi: <br/> **1. Corpo della richiesta non presente:** verranno restituiti tutti i dati appartenenti al dataset, senza applicare alcun filtro. <br/> **2. Corpo della richiesta contenente il filtro:** il dato verrà filtrato secondo secondo i filtri specificati. |
+| **POST** | **/getAnalytics/filtered** | Route che mostra i dati del dataset, analizzati ed eventulmente filtrati, in formato JSON. <br/>  Casi: <br/> **1. Corpo della richiesta non presente:** verranno restituiti tutti i dati appartenenti al dataset, senza applicare alcun filtro. <br/> **2. Corpo della richiesta contenente il filtro:** il dato verrà filtrato secondo i filtri specificati. |
 
 -----
 
@@ -89,15 +89,15 @@ Tramite Advanced REST Client
 I metodi di analisi implementati sono i seguenti:
 
 ####  Numerici
- - MEDIA;
- - MINIMO;
- - MASSIMO;
- - DEVIAZIONE STANDARD;
- - SOMMA;
- - CONTEGGIO.
+ - MEDIA (average)
+ - MINIMO (min)
+ - MASSIMO (max)
+ - DEVIAZIONE STANDARD (stddev)
+ - SOMMA (sum)
+ - CONTEGGIO (count)
  
  #### Su stringhe
- - CONTEGGIO ELEMENTI UNICI.
+ - CONTEGGIO ELEMENTI UNICI (setIncKey)
  
  -----
  
